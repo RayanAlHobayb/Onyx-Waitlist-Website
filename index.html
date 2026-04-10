@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Onyx — The first credit card in Saudi Arabia that rewards your rent</title>
+  <meta name="description" content="Onyx is a Sharia-compliant credit card that rewards you for paying rent. Join the waitlist.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            gold: '#C5A55A',
+            'gold-light': '#D4BA7A',
+            'gold-dark': '#A8893E',
+            dark: {
+              950: '#06060A',
+              900: '#0C0C10',
+              800: '#141418',
+              700: '#1C1C22',
+              600: '#28282F',
+              500: '#38383F',
+            }
+          },
+          fontFamily: {
+            display: ['"Playfair Display"', 'Georgia', 'serif'],
+            sans: ['"DM Sans"', 'Helvetica', 'Arial', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+    html { scroll-behavior: smooth; }
+
+    /* Grain overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    }
+
+    /* Ambient glows */
+    .hero-glow-1 {
+      position: absolute;
+      top: -15%;
+      right: -10%;
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(197,165,90,0.06) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .hero-glow-2 {
+      position: absolute;
+      bottom: -20%;
+      left: -15%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(197,165,90,0.03) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* Glass card */
+    .glass-card {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.05);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+    }
+
+    /* Gold gradient divider */
+    .gold-line {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(197,165,90,0.25), transparent);
+    }
+
+    /* FAQ */
+    details summary { list-style: none; }
+    details summary::-webkit-details-marker { display: none; }
+    details[open] .faq-icon { transform: rotate(45deg); }
+
+    /* Card hover */
+    .step-card { transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; }
+    .step-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(197,165,90,0.12);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    }
+
+    /* Category hover */
+    .cat-card { transition: transform 0.25s ease, background 0.25s ease; }
+    .cat-card:hover { transform: translateY(-2px); background: rgba(197,165,90,0.06); }
+
+    /* Input focus */
+    input:focus, select:focus { box-shadow: 0 0 0 3px rgba(197,165,90,0.08); }
+
+    /* Nav */
+    .nav-hidden { opacity: 0; transform: translateY(-100%); pointer-events: none; }
+    .nav-visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+    /* Riyadh map */
+    .riyadh-map-wrap {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      mask-image: radial-gradient(ellipse 80% 70% at 65% 45%, black 10%, transparent 65%);
+      -webkit-mask-image: radial-gradient(ellipse 80% 70% at 65% 45%, black 10%, transparent 65%);
+    }
+
+    /* Stagger reveal */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp 0.8s ease forwards; opacity: 0; }
+    .fade-up-1 { animation-delay: 0.1s; }
+    .fade-up-2 { animation-delay: 0.25s; }
+    .fade-up-3 { animation-delay: 0.4s; }
+    .fade-up-4 { animation-delay: 0.55s; }
+
+    /* Credit card visual */
+    .card-visual {
+      width: 300px;
+      height: 190px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #1A1A22 0%, #0E0E14 50%, #1A1A22 100%);
+      border: 1px solid rgba(197,165,90,0.15);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 80px rgba(197,165,90,0.04);
+      position: relative;
+      overflow: hidden;
+    }
+    .card-visual::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 30% 40%, rgba(197,165,90,0.06) 0%, transparent 50%);
+    }
+    .card-chip {
+      width: 36px;
+      height: 28px;
+      border-radius: 5px;
+      background: linear-gradient(135deg, #C5A55A 0%, #A8893E 100%);
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body class="bg-dark-950 text-white font-sans antialiased overflow-x-hidden">
+
+  <!-- Nav -->
+  <nav id="main-nav" class="fixed top-0 left-0 right-0 z-50 nav-hidden transition-all duration-300">
+    <div class="mx-4 sm:mx-6 mt-3 rounded-2xl bg-dark-900/80 backdrop-blur-xl border border-white/[0.05]">
+      <div class="max-w-6xl mx-auto px-5 sm:px-8 h-14 flex items-center justify-between">
+        <span class="text-gold font-bold text-lg tracking-[0.2em] font-display">ONYX</span>
+        <a href="#waitlist" class="text-sm text-gold border border-gold/25 rounded-full px-5 py-1.5 hover:bg-gold/10 transition-colors duration-200 cursor-pointer">
+          Join Waitlist
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Logo -->
+  <div class="px-4 sm:px-6 pt-8 sm:pt-10">
+    <div class="max-w-6xl mx-auto">
+      <span class="text-gold font-bold text-3xl sm:text-4xl tracking-[0.25em] font-display">ONYX</span>
+    </div>
+  </div>
+
+  <!-- ═══════════ HERO ═══════════ -->
+  <section id="waitlist" class="relative pt-12 pb-24 sm:pt-16 sm:pb-32 px-4 sm:px-6">
+    <!-- Riyadh map background -->
+    <div class="riyadh-map-wrap">
+      <svg class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px]" viewBox="0 0 800 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g stroke="#C5A55A" stroke-opacity="0.06" stroke-width="0.7">
+          <circle cx="420" cy="380" r="80"/><circle cx="420" cy="380" r="150"/><circle cx="420" cy="380" r="240"/><circle cx="420" cy="380" r="340"/>
+          <line x1="420" y1="20" x2="420" y2="760"/><line x1="40" y1="380" x2="780" y2="380"/>
+          <line x1="140" y1="100" x2="700" y2="660"/><line x1="700" y1="100" x2="140" y2="660"/>
+          <line x1="200" y1="50" x2="640" y2="710"/><line x1="640" y1="50" x2="200" y2="710"/>
+          <line x1="180" y1="220" x2="660" y2="220"/><line x1="160" y1="280" x2="680" y2="280"/>
+          <line x1="140" y1="330" x2="700" y2="330"/><line x1="130" y1="430" x2="710" y2="430"/>
+          <line x1="150" y1="490" x2="690" y2="490"/><line x1="170" y1="550" x2="670" y2="550"/>
+          <line x1="250" y1="140" x2="250" y2="640"/><line x1="320" y1="120" x2="320" y2="660"/>
+          <line x1="520" y1="120" x2="520" y2="660"/><line x1="590" y1="140" x2="590" y2="640"/>
+          <rect x="260" y="235" width="50" height="35" rx="2"/><rect x="325" y="235" width="40" height="35" rx="2"/>
+          <rect x="430" y="235" width="45" height="35" rx="2"/><rect x="530" y="235" width="50" height="35" rx="2"/>
+          <rect x="260" y="290" width="50" height="30" rx="2"/><rect x="325" y="290" width="40" height="30" rx="2"/>
+          <rect x="430" y="290" width="45" height="30" rx="2"/><rect x="530" y="290" width="50" height="30" rx="2"/>
+          <rect x="260" y="440" width="50" height="40" rx="2"/><rect x="325" y="440" width="40" height="40" rx="2"/>
+          <rect x="430" y="440" width="45" height="40" rx="2"/><rect x="530" y="440" width="50" height="40" rx="2"/>
+          <text x="280" y="215" fill="#C5A55A" fill-opacity="0.1" font-size="8" font-family="DM Sans, sans-serif" letter-spacing="1">AL OLAYA</text>
+          <text x="440" y="215" fill="#C5A55A" fill-opacity="0.1" font-size="8" font-family="DM Sans, sans-serif" letter-spacing="1">AL NAKHEEL</text>
+          <text x="280" y="425" fill="#C5A55A" fill-opacity="0.1" font-size="8" font-family="DM Sans, sans-serif" letter-spacing="1">AL MALQA</text>
+          <text x="440" y="425" fill="#C5A55A" fill-opacity="0.1" font-size="8" font-family="DM Sans, sans-serif" letter-spacing="1">AL YASMIN</text>
+        </g>
+      </svg>
+    </div>
+    <div class="hero-glow-1 hidden sm:block"></div>
+    <div class="hero-glow-2 hidden sm:block"></div>
+
+    <div class="max-w-6xl mx-auto">
+      <div class="grid lg:grid-cols-2 gap-16 lg:gap-20 items-start">
+
+        <!-- Left: Copy + Form -->
+        <div>
+          <p class="fade-up fade-up-1 text-gold text-xs font-semibold tracking-[0.25em] uppercase mb-5">Coming to Riyadh</p>
+          <h1 class="fade-up fade-up-2 text-4xl sm:text-5xl lg:text-[3.4rem] font-display font-bold leading-[1.08] tracking-tight">
+            The first credit card<br>that rewards
+            <span class="text-gold italic"> your rent.</span>
+          </h1>
+          <p class="fade-up fade-up-3 mt-6 text-lg text-neutral-400 leading-relaxed max-w-md">
+            Sharia-compliant. Built for renters. Earn points on your rent and everyday spending at partner merchants across the city.
+          </p>
+
+          <!-- Form -->
+          <form id="waitlist-form" class="fade-up fade-up-4 mt-10 space-y-3 max-w-sm" onsubmit="return handleSubmit(event)">
+            <div>
+              <label for="first-name" class="sr-only">First name</label>
+              <input type="text" id="first-name" name="first_name" placeholder="First name" required
+                class="w-full bg-dark-800 border border-dark-600 rounded-xl px-4 py-3 text-white placeholder-neutral-500 focus:outline-none focus:border-gold/40 transition-all duration-200">
+            </div>
+            <div>
+              <label for="email" class="sr-only">Email address</label>
+              <input type="email" id="email" name="email" placeholder="Email address" required
+                class="w-full bg-dark-800 border border-dark-600 rounded-xl px-4 py-3 text-white placeholder-neutral-500 focus:outline-none focus:border-gold/40 transition-all duration-200">
+            </div>
+            <div>
+              <label for="neighborhood" class="sr-only">Neighborhood</label>
+              <select id="neighborhood" name="neighborhood" required
+                class="w-full bg-dark-800 border border-dark-600 rounded-xl px-4 py-3 text-white appearance-none cursor-pointer focus:outline-none focus:border-gold/40 transition-all duration-200">
+                <option value="" disabled selected class="text-neutral-500">Neighborhood in Riyadh</option>
+                <option value="Al Olaya">Al Olaya</option>
+                <option value="Al Nakheel">Al Nakheel</option>
+                <option value="Al Malqa">Al Malqa</option>
+                <option value="Al Yasmin">Al Yasmin</option>
+                <option value="Al Narjis">Al Narjis</option>
+                <option value="Hittin">Hittin</option>
+                <option value="Al Wurud">Al Wurud</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <button type="submit" id="submit-btn"
+              class="w-full bg-gold text-dark-950 font-semibold rounded-xl px-4 py-3.5 hover:bg-gold-light active:bg-gold-dark transition-colors duration-200 cursor-pointer mt-1">
+              Join the Waitlist
+            </button>
+            <p class="text-xs text-neutral-600 text-center pt-1">Early members get priority access at launch</p>
+          </form>
+
+          <!-- Success -->
+          <div id="success-msg" class="mt-10 max-w-sm hidden">
+            <div class="glass-card rounded-2xl px-6 py-5 border-gold/15">
+              <p class="text-gold font-semibold">You're on the list.</p>
+              <p class="text-neutral-400 text-sm mt-1">We'll reach out when Onyx is ready for you.</p>
+            </div>
+          </div>
+
+          <!-- Already registered -->
+          <div id="duplicate-msg" class="mt-10 max-w-sm hidden">
+            <div class="glass-card rounded-2xl px-6 py-5 border-yellow-500/15">
+              <p class="text-yellow-400 font-semibold">You're already registered.</p>
+              <p class="text-neutral-400 text-sm mt-1">This email is already on the waitlist. We'll be in touch soon.</p>
+            </div>
+          </div>
+
+          <!-- Generic error -->
+          <div id="error-msg" class="mt-10 max-w-sm hidden">
+            <div class="glass-card rounded-2xl px-6 py-5 border-red-500/15">
+              <p class="text-red-400 font-semibold">Something went wrong.</p>
+              <p class="text-neutral-400 text-sm mt-1">Please try again in a moment.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Card visual + floating elements -->
+        <div class="hidden lg:flex flex-col items-center pt-12 relative">
+          <!-- Credit card -->
+          <div class="card-visual p-6 flex flex-col justify-between relative z-10">
+            <div class="flex items-start justify-between">
+              <div class="card-chip"></div>
+              <span class="text-gold/60 text-[10px] tracking-[0.2em] font-medium">SHARIA-COMPLIANT</span>
+            </div>
+            <div>
+              <p class="text-neutral-500 text-xs tracking-widest mb-1">•••• •••• •••• 4821</p>
+              <div class="flex items-end justify-between">
+                <div>
+                  <p class="text-neutral-600 text-[9px] uppercase tracking-wider">Cardholder</p>
+                  <p class="text-white/80 text-sm font-medium tracking-wide">OMAR OSMAN</p>
+                </div>
+                <span class="text-gold font-bold text-lg tracking-[0.15em] font-display">ONYX</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Floating point summary -->
+          <div class="glass-card rounded-2xl p-5 w-[260px] mt-6 space-y-3 relative z-10">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] text-neutral-500 tracking-wider uppercase">This month</span>
+              <span class="text-gold text-xs font-semibold">1,025 pts</span>
+            </div>
+            <div class="space-y-2.5">
+              <div class="flex items-center justify-between">
+                <span class="text-xs text-neutral-400">Rent (verified)</span>
+                <span class="text-gold text-xs font-medium">+325 pts</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-xs text-neutral-400">Daily spending</span>
+                <span class="text-gold text-xs font-medium">+320 pts</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-xs text-neutral-400">Partner bonus (3×)</span>
+                <span class="text-gold text-xs font-medium">+380 pts</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Floating badge -->
+          <div class="glass-card rounded-xl px-4 py-2.5 absolute top-8 -left-4 flex items-center gap-2.5 z-20">
+            <div class="w-6 h-6 rounded-full bg-gold/10 flex items-center justify-center">
+              <svg class="w-3.5 h-3.5 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+              </svg>
+            </div>
+            <span class="text-[11px] text-neutral-300 font-medium">Sharia-compliant</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="gold-line max-w-6xl mx-auto"></div>
+
+  <!-- ═══════════ HOW IT WORKS ═══════════ -->
+  <section class="py-24 sm:py-32 px-4 sm:px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="text-gold text-xs font-semibold tracking-[0.2em] uppercase">How it works</span>
+        <div class="h-px flex-1 bg-white/[0.04]"></div>
+      </div>
+      <p class="text-neutral-500 text-sm mb-12 max-w-md">No new behavior. No switching banks. Just add Onyx to your wallet and start earning.</p>
+
+      <div class="grid gap-5 sm:grid-cols-3">
+        <div class="step-card glass-card rounded-2xl p-7 space-y-4 cursor-default">
+          <div class="w-10 h-10 rounded-xl bg-gold/[0.06] border border-gold/10 flex items-center justify-center">
+            <span class="text-gold font-bold text-sm font-display">01</span>
+          </div>
+          <h3 class="text-lg font-semibold">Pay rent as usual</h3>
+          <p class="text-neutral-400 leading-relaxed text-[15px]">
+            Keep paying through Ejar or bank transfer. Nothing changes on your landlord's end or yours.
+          </p>
+        </div>
+        <div class="step-card glass-card rounded-2xl p-7 space-y-4 cursor-default">
+          <div class="w-10 h-10 rounded-xl bg-gold/[0.06] border border-gold/10 flex items-center justify-center">
+            <span class="text-gold font-bold text-sm font-display">02</span>
+          </div>
+          <h3 class="text-lg font-semibold">Use Onyx for daily spending</h3>
+          <p class="text-neutral-400 leading-relaxed text-[15px]">
+            Groceries, dining, coffee, fuel. Spend SAR 1,000/month on your card to unlock rent rewards. That's about SAR 33 a day.
+          </p>
+        </div>
+        <div class="step-card glass-card rounded-2xl p-7 space-y-4 cursor-default">
+          <div class="w-10 h-10 rounded-xl bg-gold/[0.06] border border-gold/10 flex items-center justify-center">
+            <span class="text-gold font-bold text-sm font-display">03</span>
+          </div>
+          <h3 class="text-lg font-semibold">Earn on everything</h3>
+          <p class="text-neutral-400 leading-relaxed text-[15px]">
+            Points on your rent. Points on every swipe. Bonus points at partner merchants across Riyadh.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="gold-line max-w-6xl mx-auto"></div>
+
+  <!-- ═══════════ PARTNER NETWORK ═══════════ -->
+  <section class="py-24 sm:py-32 px-4 sm:px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="text-gold text-xs font-semibold tracking-[0.2em] uppercase">Partner network</span>
+        <div class="h-px flex-1 bg-white/[0.04]"></div>
+      </div>
+      <h2 class="text-2xl sm:text-3xl font-display font-bold tracking-tight mb-3">
+        Earn bonus points at local<br>businesses across Riyadh
+      </h2>
+      <p class="text-neutral-500 text-sm mb-12 max-w-lg">
+        Use the Onyx app to find partnered restaurants, gyms, pharmacies, and more near you. Every purchase at a partner earns bonus points automatically.
+      </p>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+        <div class="cat-card glass-card rounded-xl p-5 text-center cursor-default">
+          <span class="text-2xl mb-2 block">🍽</span>
+          <span class="text-sm text-neutral-300 font-medium">Dining</span>
+        </div>
+        <div class="cat-card glass-card rounded-xl p-5 text-center cursor-default">
+          <span class="text-2xl mb-2 block">💪</span>
+          <span class="text-sm text-neutral-300 font-medium">Fitness</span>
+        </div>
+        <div class="cat-card glass-card rounded-xl p-5 text-center cursor-default">
+          <span class="text-2xl mb-2 block">🏠</span>
+          <span class="text-sm text-neutral-300 font-medium">Home</span>
+        </div>
+        <div class="cat-card glass-card rounded-xl p-5 text-center cursor-default">
+          <span class="text-2xl mb-2 block">📱</span>
+          <span class="text-sm text-neutral-300 font-medium">Electronics</span>
+        </div>
+        <div class="cat-card glass-card rounded-xl p-5 text-center cursor-default">
+          <span class="text-2xl mb-2 block">💊</span>
+          <span class="text-sm text-neutral-300 font-medium">Pharmacy</span>
+        </div>
+        <div class="cat-card glass-card rounded-xl p-5 text-center cursor-default">
+          <span class="text-2xl mb-2 block">🧹</span>
+          <span class="text-sm text-neutral-300 font-medium">Services</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="gold-line max-w-6xl mx-auto"></div>
+
+  <!-- ═══════════ WHY ONYX ═══════════ -->
+  <section class="py-24 sm:py-32 px-4 sm:px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="flex items-center gap-3 mb-12">
+        <span class="text-gold text-xs font-semibold tracking-[0.2em] uppercase">Why Onyx</span>
+        <div class="h-px flex-1 bg-white/[0.04]"></div>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="space-y-3">
+          <div class="w-8 h-8 rounded-lg bg-gold/[0.06] flex items-center justify-center">
+            <svg class="w-4 h-4 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <h3 class="font-semibold text-white">Rent finally earns</h3>
+          <p class="text-sm text-neutral-400 leading-relaxed">Your biggest monthly expense has never generated a single reward point. Onyx changes that.</p>
+        </div>
+        <div class="space-y-3">
+          <div class="w-8 h-8 rounded-lg bg-gold/[0.06] flex items-center justify-center">
+            <svg class="w-4 h-4 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          </div>
+          <h3 class="font-semibold text-white">Sharia-compliant</h3>
+          <p class="text-sm text-neutral-400 leading-relaxed">Built from the ground up with zero interest. The card operates on a structure reviewed by a Sharia advisory board.</p>
+        </div>
+        <div class="space-y-3">
+          <div class="w-8 h-8 rounded-lg bg-gold/[0.06] flex items-center justify-center">
+            <svg class="w-4 h-4 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+          </div>
+          <h3 class="font-semibold text-white">Apple Pay from day one</h3>
+          <p class="text-sm text-neutral-400 leading-relaxed">Add Onyx to your Apple Wallet the moment you're approved. Start earning before the physical card arrives.</p>
+        </div>
+        <div class="space-y-3">
+          <div class="w-8 h-8 rounded-lg bg-gold/[0.06] flex items-center justify-center">
+            <svg class="w-4 h-4 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          </div>
+          <h3 class="font-semibold text-white">Local partner map</h3>
+          <p class="text-sm text-neutral-400 leading-relaxed">Open the app, see partnered businesses near you, and earn 3× or more when you pay with Onyx.</p>
+        </div>
+        <div class="space-y-3">
+          <div class="w-8 h-8 rounded-lg bg-gold/[0.06] flex items-center justify-center">
+            <svg class="w-4 h-4 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+          </div>
+          <h3 class="font-semibold text-white">No switching required</h3>
+          <p class="text-sm text-neutral-400 leading-relaxed">Keep your existing bank and cards. Onyx is added alongside them, not instead of them.</p>
+        </div>
+        <div class="space-y-3">
+          <div class="w-8 h-8 rounded-lg bg-gold/[0.06] flex items-center justify-center">
+            <svg class="w-4 h-4 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+          </div>
+          <h3 class="font-semibold text-white">Free to start</h3>
+          <p class="text-sm text-neutral-400 leading-relaxed">The free card costs nothing. A premium tier with higher earn rates is available for those who want more.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="gold-line max-w-6xl mx-auto"></div>
+
+  <!-- ═══════════ FAQ ═══════════ -->
+  <section class="py-24 sm:py-32 px-4 sm:px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="grid lg:grid-cols-[1fr,2fr] gap-12 lg:gap-20">
+        <div>
+          <span class="text-gold text-xs font-semibold tracking-[0.2em] uppercase">FAQ</span>
+          <h2 class="mt-3 text-2xl sm:text-3xl font-display font-bold tracking-tight">Common<br>questions</h2>
+        </div>
+        <div class="divide-y divide-white/[0.06]">
+          <details class="group py-6 first:pt-0">
+            <summary class="flex items-center justify-between cursor-pointer">
+              <span class="text-[17px] font-medium pr-4">Is Onyx Sharia-compliant?</span>
+              <span class="faq-icon text-gold text-xl transition-transform duration-200 shrink-0">+</span>
+            </summary>
+            <p class="mt-4 text-neutral-400 leading-relaxed">
+              Yes. Onyx is built from the ground up to be fully Sharia-compliant. There is no interest (riba). The card operates on a Murabaha structure reviewed by our Sharia advisory board.
+            </p>
+          </details>
+          <details class="group py-6">
+            <summary class="flex items-center justify-between cursor-pointer">
+              <span class="text-[17px] font-medium pr-4">Do I need to change how I pay rent?</span>
+              <span class="faq-icon text-gold text-xl transition-transform duration-200 shrink-0">+</span>
+            </summary>
+            <p class="mt-4 text-neutral-400 leading-relaxed">
+              No. Keep paying rent however you currently do — through Ejar, bank transfer, or directly to your landlord. Onyx verifies your payment and credits the points separately. Nothing changes on your landlord's end.
+            </p>
+          </details>
+          <details class="group py-6">
+            <summary class="flex items-center justify-between cursor-pointer">
+              <span class="text-[17px] font-medium pr-4">What is the minimum spend?</span>
+              <span class="faq-icon text-gold text-xl transition-transform duration-200 shrink-0">+</span>
+            </summary>
+            <p class="mt-4 text-neutral-400 leading-relaxed">
+              Spend SAR 1,000 per month on everyday purchases with your Onyx card to activate rent rewards. That's about SAR 33 a day — groceries, dining, coffee, fuel. Most cardholders hit this without thinking about it.
+            </p>
+          </details>
+          <details class="group py-6">
+            <summary class="flex items-center justify-between cursor-pointer">
+              <span class="text-[17px] font-medium pr-4">Is the card free?</span>
+              <span class="faq-icon text-gold text-xl transition-transform duration-200 shrink-0">+</span>
+            </summary>
+            <p class="mt-4 text-neutral-400 leading-relaxed">
+              Yes. The standard Onyx card is completely free. A premium tier (SAR 350/year) is available with higher earn rates on rent and partner spending, for those who want to maximize their rewards.
+            </p>
+          </details>
+          <details class="group py-6">
+            <summary class="flex items-center justify-between cursor-pointer">
+              <span class="text-[17px] font-medium pr-4">When does Onyx launch?</span>
+              <span class="faq-icon text-gold text-xl transition-transform duration-200 shrink-0">+</span>
+            </summary>
+            <p class="mt-4 text-neutral-400 leading-relaxed">
+              We're launching in Riyadh first. Join the waitlist and we'll notify you as soon as we're ready. Early waitlist members get priority access.
+            </p>
+          </details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="gold-line max-w-6xl mx-auto"></div>
+
+  <!-- ═══════════ CTA REPEAT ═══════════ -->
+  <section class="py-24 sm:py-32 px-4 sm:px-6">
+    <div class="max-w-6xl mx-auto text-center">
+      <h2 class="text-2xl sm:text-3xl font-display font-bold tracking-tight mb-4">
+        Your rent should work <span class="text-gold italic">for you.</span>
+      </h2>
+      <p class="text-neutral-400 mb-8 max-w-md mx-auto">Join the waitlist and be the first to know when Onyx launches in Riyadh.</p>
+      <a href="#waitlist" class="inline-block bg-gold text-dark-950 font-semibold rounded-xl px-8 py-3.5 hover:bg-gold-light active:bg-gold-dark transition-colors duration-200 cursor-pointer">
+        Join the Waitlist
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-12 px-4 sm:px-6 border-t border-white/[0.04]">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <span class="text-gold font-bold tracking-[0.2em] text-sm font-display">ONYX</span>
+      <p class="text-neutral-600 text-sm">&copy; 2026 Onyx. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Nav show/hide
+    (function() {
+      const nav = document.getElementById('main-nav');
+      const threshold = 400;
+      let ticking = false;
+      window.addEventListener('scroll', function() {
+        if (!ticking) {
+          window.requestAnimationFrame(function() {
+            nav.classList.toggle('nav-visible', window.scrollY > threshold);
+            nav.classList.toggle('nav-hidden', window.scrollY <= threshold);
+            ticking = false;
+          });
+          ticking = true;
+        }
+      });
+    })();
+
+    async function handleSubmit(e) {
+      e.preventDefault();
+
+      const btn = document.getElementById('submit-btn');
+      const form = document.getElementById('waitlist-form');
+      const successMsg = document.getElementById('success-msg');
+      const duplicateMsg = document.getElementById('duplicate-msg');
+      const errorMsg = document.getElementById('error-msg');
+
+      // reset messages
+      successMsg.classList.add('hidden');
+      duplicateMsg.classList.add('hidden');
+      errorMsg.classList.add('hidden');
+
+      // loading state
+      const originalText = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = 'Joining...';
+      btn.classList.add('opacity-70');
+
+      try {
+        const res = await fetch('/api/waitlist', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            full_name: document.getElementById('first-name').value,
+            email: document.getElementById('email').value,
+            neighborhood: document.getElementById('neighborhood').value,
+          }),
+        });
+
+        if (res.ok) {
+          form.classList.add('hidden');
+          successMsg.classList.remove('hidden');
+        } else if (res.status === 409) {
+          form.classList.add('hidden');
+          duplicateMsg.classList.remove('hidden');
+        } else {
+          errorMsg.classList.remove('hidden');
+          btn.disabled = false;
+          btn.textContent = originalText;
+          btn.classList.remove('opacity-70');
+        }
+      } catch {
+        errorMsg.classList.remove('hidden');
+        btn.disabled = false;
+        btn.textContent = originalText;
+        btn.classList.remove('opacity-70');
+      }
+
+      return false;
+    }
+  </script>
+</body>
+</html>

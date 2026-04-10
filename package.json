@@ -1,0 +1,14 @@
+{
+  "name": "onyx-backend",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel"
+  },
+  "dependencies": {
+    "@mailchimp/mailchimp_marketing": "^3.0.80",
+    "@supabase/supabase-js": "^2.103.0",
+    "resend": "^6.10.0"
+  }
+}
