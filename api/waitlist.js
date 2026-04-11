@@ -56,7 +56,8 @@ export default async function handler(req, res) {
     if (error.code === "23505") {
       return res.status(409).json({ error: "This email is already on the waitlist" });
     }
-    return res.status(500).json({ error: "Something went wrong. Please try again." });
+    // TODO: remove debug detail before going live
+    return res.status(500).json({ error: "Something went wrong. Please try again.", debug: error });
   }
 
   // --- confirmation email ---
