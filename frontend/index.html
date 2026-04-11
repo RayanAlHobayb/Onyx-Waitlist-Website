@@ -646,8 +646,10 @@
       btn.textContent = 'Joining...';
       btn.classList.add('opacity-70');
 
+      const API_URL = '__API_GATEWAY_URL__';
+
       try {
-        const res = await fetch('/api/waitlist', {
+        const res = await fetch(`${API_URL}/waitlist`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -670,7 +672,7 @@
           btn.classList.remove('opacity-70');
         }
       } catch {
-        errorMsg.classList.remove('hidden');
+        showToast();
         btn.disabled = false;
         btn.textContent = originalText;
         btn.classList.remove('opacity-70');

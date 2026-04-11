@@ -1,14 +1,19 @@
 {
-  "name": "onyx-backend",
+  "name": "onyx-waitlist-infra",
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "vercel dev",
-    "deploy": "vercel"
+    "build": "tsc",
+    "cdk": "cdk"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "aws-cdk": "^2.150.0",
+    "ts-node": "^10.9.0",
+    "typescript": "^5.0.0"
   },
   "dependencies": {
-    "@mailchimp/mailchimp_marketing": "^3.0.80",
-    "@supabase/supabase-js": "^2.103.0",
-    "resend": "^6.10.0"
+    "aws-cdk-lib": "^2.150.0",
+    "constructs": "^10.0.0"
   }
 }
