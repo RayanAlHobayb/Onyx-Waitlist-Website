@@ -36,6 +36,11 @@ export default async function handler(req, res) {
   const firstName = trimmedName.split(" ")[0];
 
   // --- insert ---
+  if (!supabase) {
+    console.error("Supabase is not configured — missing SUPABASE_URL or SUPABASE_ANON_KEY");
+    return res.status(500).json({ error: "Something went wrong. Please try again." });
+  }
+
   const { data, error } = await supabase
     .from("waitlist")
     .insert({

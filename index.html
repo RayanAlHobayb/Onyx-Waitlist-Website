@@ -566,8 +566,8 @@
   </footer>
 
   <!-- Toast popup -->
-  <div id="toast" class="fixed top-6 left-1/2 -translate-x-1/2 z-[10000] hidden">
-    <div class="glass-card rounded-2xl px-6 py-4 border-red-500/20 shadow-2xl shadow-black/40 flex items-center gap-3 animate-toast-in">
+  <div id="toast" class="fixed top-6 inset-x-0 z-[10000] flex justify-center hidden">
+    <div class="glass-card rounded-2xl px-6 py-4 border-red-500/20 shadow-2xl shadow-black/40 flex items-center gap-3 animate-toast-in mx-4">
       <span class="text-red-400 text-lg shrink-0">&#9888;</span>
       <div>
         <p class="text-red-400 font-semibold text-sm">Something went wrong</p>
@@ -579,12 +579,12 @@
 
   <style>
     @keyframes toast-in {
-      from { opacity: 0; transform: translate(-50%, -20px); }
-      to { opacity: 1; transform: translate(-50%, 0); }
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
     @keyframes toast-out {
-      from { opacity: 1; transform: translate(-50%, 0); }
-      to { opacity: 0; transform: translate(-50%, -20px); }
+      from { opacity: 1; transform: translateY(0); }
+      to { opacity: 0; transform: translateY(-20px); }
     }
     .animate-toast-in { animation: toast-in 0.3s ease-out forwards; }
     .animate-toast-out { animation: toast-out 0.3s ease-in forwards; }
