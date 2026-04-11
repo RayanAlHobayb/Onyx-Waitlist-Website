@@ -278,13 +278,7 @@
             </div>
           </div>
 
-          <!-- Generic error -->
-          <div id="error-msg" class="mt-10 max-w-sm hidden">
-            <div class="glass-card rounded-2xl px-6 py-5 border-red-500/15">
-              <p class="text-red-400 font-semibold">Something went wrong.</p>
-              <p class="text-neutral-400 text-sm mt-1">Please try again in a moment.</p>
-            </div>
-          </div>
+          <!-- Generic error (hidden, replaced by toast) -->
         </div>
 
         <!-- Right: Card visual + floating elements -->
@@ -571,6 +565,51 @@
     </div>
   </footer>
 
+  <!-- Toast popup -->
+  <div id="toast" class="fixed top-6 left-1/2 -translate-x-1/2 z-[10000] hidden">
+    <div class="glass-card rounded-2xl px-6 py-4 border-red-500/20 shadow-2xl shadow-black/40 flex items-center gap-3 animate-toast-in">
+      <span class="text-red-400 text-lg shrink-0">&#9888;</span>
+      <div>
+        <p class="text-red-400 font-semibold text-sm">Something went wrong</p>
+        <p class="text-neutral-400 text-xs mt-0.5">Please try again in a moment.</p>
+      </div>
+      <button onclick="hideToast()" class="text-neutral-500 hover:text-white ml-2 text-lg leading-none cursor-pointer">&times;</button>
+    </div>
+  </div>
+
+  <style>
+    @keyframes toast-in {
+      from { opacity: 0; transform: translate(-50%, -20px); }
+      to { opacity: 1; transform: translate(-50%, 0); }
+    }
+    @keyframes toast-out {
+      from { opacity: 1; transform: translate(-50%, 0); }
+      to { opacity: 0; transform: translate(-50%, -20px); }
+    }
+    .animate-toast-in { animation: toast-in 0.3s ease-out forwards; }
+    .animate-toast-out { animation: toast-out 0.3s ease-in forwards; }
+  </style>
+
+  <script>
+    function showToast() {
+      const toast = document.getElementById('toast');
+      toast.classList.remove('hidden');
+      toast.querySelector('div').classList.remove('animate-toast-out');
+      toast.querySelector('div').classList.add('animate-toast-in');
+      // Auto-hide after 5 seconds
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(hideToast, 5000);
+    }
+
+    function hideToast() {
+      const toast = document.getElementById('toast');
+      const inner = toast.querySelector('div');
+      inner.classList.remove('animate-toast-in');
+      inner.classList.add('animate-toast-out');
+      setTimeout(() => toast.classList.add('hidden'), 300);
+    }
+  </script>
+
   <script>
     // Nav show/hide
     (function() {
@@ -596,12 +635,10 @@
       const form = document.getElementById('waitlist-form');
       const successMsg = document.getElementById('success-msg');
       const duplicateMsg = document.getElementById('duplicate-msg');
-      const errorMsg = document.getElementById('error-msg');
-
       // reset messages
       successMsg.classList.add('hidden');
       duplicateMsg.classList.add('hidden');
-      errorMsg.classList.add('hidden');
+      hideToast();
 
       // loading state
       const originalText = btn.textContent;
@@ -627,7 +664,7 @@
           form.classList.add('hidden');
           duplicateMsg.classList.remove('hidden');
         } else {
-          errorMsg.classList.remove('hidden');
+          showToast();
           btn.disabled = false;
           btn.textContent = originalText;
           btn.classList.remove('opacity-70');

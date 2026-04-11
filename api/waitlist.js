@@ -54,7 +54,7 @@ export default async function handler(req, res) {
   }
 
   // --- confirmation email ---
-  try {
+  if (resend) try {
     await resend.emails.send({
       from: `Onyx <${FROM_EMAIL}>`,
       to: trimmedEmail,
@@ -81,7 +81,7 @@ export default async function handler(req, res) {
   }
 
   // --- mailchimp sync ---
-  if (MAILCHIMP_LIST_ID) {
+  if (mailchimp && MAILCHIMP_LIST_ID) {
     try {
       await mailchimp.lists.addListMember(MAILCHIMP_LIST_ID, {
         email_address: trimmedEmail,
@@ -96,7 +96,7 @@ export default async function handler(req, res) {
   }
 
   // --- admin notification ---
-  if (NOTIFY_EMAIL) {
+  if (resend && NOTIFY_EMAIL) {
     try {
       await resend.emails.send({
         from: `Onyx <${FROM_EMAIL}>`,
