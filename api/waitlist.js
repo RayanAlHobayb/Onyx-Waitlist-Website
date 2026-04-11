@@ -52,6 +52,7 @@ export default async function handler(req, res) {
     .single();
 
   if (error) {
+    console.error("Supabase insert error:", JSON.stringify(error));
     if (error.code === "23505") {
       return res.status(409).json({ error: "This email is already on the waitlist" });
     }
