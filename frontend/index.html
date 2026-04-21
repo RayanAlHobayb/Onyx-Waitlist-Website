@@ -421,11 +421,24 @@
     .btn-submit:hover .arrow{transform:translateX(4px)}
 
     .form-msg{
-      display:flex;flex-direction:column;justify-content:center;
-      text-align:center;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      text-align:center;padding:48px 32px;
+      background:var(--cream);border-radius:8px;
+      border:1px solid var(--gold);
+      box-shadow:12px 12px 0 var(--gold), 16px 16px 0 var(--ink);
     }
-    .form-msg .msg-title{font-family:var(--serif);font-size:clamp(2rem,4vw,3.5rem);font-weight:400;letter-spacing:-.02em;margin-bottom:12px;color:var(--cream)}
-    .form-msg .msg-sub{color:var(--warm-l);font-size:16px;line-height:1.5}
+    .form-msg .msg-icon{
+      width:56px;height:56px;border-radius:50%;
+      border:2px solid var(--gold);
+      display:flex;align-items:center;justify-content:center;
+      margin-bottom:24px;
+    }
+    .form-msg .msg-title{font-family:var(--serif);font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:400;letter-spacing:-.02em;margin-bottom:10px;color:var(--ink)}
+    .form-msg .msg-sub{color:var(--warm);font-size:15px;line-height:1.5;max-width:300px}
+    .form-msg .msg-tag{
+      font-family:var(--mono);font-size:10px;letter-spacing:.25em;text-transform:uppercase;
+      color:var(--gold-d);margin-top:24px;
+    }
 
     /* ═════════════ MANIFESTO / BIG QUOTE ═════════════ */
     #manifesto{
@@ -1009,12 +1022,16 @@
         </form>
       </div>
       <div id="sm" class="form-msg" style="display:none">
+        <div class="msg-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div>
         <p class="msg-title">You're on the list.</p>
         <p class="msg-sub">We'll reach out when Onyx is ready for you.</p>
+        <p class="msg-tag">Confirmed</p>
       </div>
       <div id="dm" class="form-msg dup" style="display:none">
+        <div class="msg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4m0 4h.01"/><circle cx="12" cy="12" r="10"/></svg></div>
         <p class="msg-title">Already registered.</p>
-        <p class="msg-sub">This email is on the waitlist.</p>
+        <p class="msg-sub">This email is on the waitlist. We'll be in touch soon.</p>
+        <p class="msg-tag">Duplicate entry</p>
       </div>
     </div>
   </div>
@@ -1151,12 +1168,16 @@
       <button type="submit" id="sb2" class="btn-submit"><span>Reserve my spot</span><span class="arrow">→</span></button>
     </form>
     <div id="sm2" class="form-msg" style="display:none">
+      <div class="msg-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div>
       <p class="msg-title">You're on the list.</p>
       <p class="msg-sub">We'll reach out when Onyx is ready.</p>
+      <p class="msg-tag">Confirmed</p>
     </div>
     <div id="dm2" class="form-msg dup" style="display:none">
+      <div class="msg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4m0 4h.01"/><circle cx="12" cy="12" r="10"/></svg></div>
       <p class="msg-title">Already registered.</p>
       <p class="msg-sub">This email is on the waitlist.</p>
+      <p class="msg-tag">Duplicate entry</p>
     </div>
   </div>
 </div>
