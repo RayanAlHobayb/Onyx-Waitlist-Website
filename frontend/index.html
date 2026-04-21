@@ -407,7 +407,7 @@
       width:100%; padding:18px; margin-top:8px;
       background:var(--ink); color:var(--cream);
       border:none; cursor:pointer; border-radius:4px;
-      font-family:var(--mono); font-size:12px; font-weight:700; letter-spacing:.25em; text-transform:uppercase;
+      font-family:var(--sans); font-size:13px; font-weight:700; letter-spacing:.15em; text-transform:uppercase;
       position:relative; overflow:hidden; transition:all .25s;
       display:flex; align-items:center; justify-content:center; gap:12px;
     }
@@ -527,7 +527,7 @@
     }
     .part-pill::after{content:'✦';color:var(--gold);font-size:20px;margin-left:32px}
     .part-pill i{color:var(--gold);font-style:italic;margin-left:12px}
-    .marquee-col:nth-child(even) .part-pill{color:var(--warm)}
+    .marquee-col:nth-child(even) .part-pill{color:var(--ink)}
 
     .marquee-col+.marquee-col{ padding-bottom:120px }
 
@@ -665,8 +665,7 @@
       .foot-big{font-size:clamp(4rem,16vw,8rem)}
       .annot, .hero-stat-chip, .rotating-ring{display:none}
       .topbar-left .topbar-meta{display:none}
-      #bottom-bar{padding:0 16px}
-      .bb-brand{font-size:22px}
+      #bottom-bar{display:none!important}
     }
   </style>
 </head>
@@ -694,10 +693,10 @@
       </h1>
       <p class="hero-sub">Earn points on your rent and everyday spending at partner merchants across the city. Your biggest monthly expense, finally working for you.</p>
 
+      <p style="font-family:var(--sans);font-size:14px;color:var(--warm);margin-bottom:20px;animation:fadeUp .9s .36s both">Coming to Riyadh soon</p>
       <div class="hero-meta">
-        <a href="#form-section" class="cta-btn" style="animation:fadeUp .9s .36s both"><span class="dot"></span>Join the Waitlist</a>
+        <a href="#form-section" class="cta-btn" style="animation:fadeUp .9s .42s both"><span class="dot"></span>Join the Waitlist</a>
       </div>
-      <p style="font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--warm);margin-top:8px;animation:fadeUp .9s .5s both">Coming to Riyadh soon</p>
     </div>
 
     <!-- RIGHT — card -->
@@ -827,9 +826,9 @@
 <!-- ================ MANIFESTO ================ -->
 <section id="manifesto">
   <div class="mani-inner">
-    <div class="mani-label sr">Manifesto · №001</div>
+    <div class="mani-label sr"></div>
     <p class="mani-text sr">Your biggest monthly expense has <i>never</i> earned you a single <u>reward point</u>.<br>Onyx changes that.</p>
-    <div class="mani-sig sr">Signed · Onyx Riyadh · 2026</div>
+    <div class="mani-label sr"></div>
   </div>
 </section>
 
@@ -943,8 +942,7 @@
 <section id="faq">
   <div class="faq-inner">
     <div class="faq-head sr">
-      <span class="mlabel">·&nbsp;&nbsp;Frequently Asked&nbsp;&nbsp;·</span>
-      <h2>Common <i>questions.</i></h2>
+      <h2>Frequently asked <i>questions.</i></h2>
     </div>
 
     <details class="sr">
@@ -986,7 +984,7 @@
 <section id="form-section">
   <div class="form-wrap">
     <div class="form-l sr">
-      <div class="how-label" style="color:var(--gold)">Apply · N° 001</div>
+      <div class="how-label" style="color:var(--gold)">Apply</div>
       <h2>Claim your <i>place</i> on the list.</h2>
       <p class="lede">Early members get priority access when Onyx launches in Riyadh. No fees. No commitments. Just first in line.</p>
 
