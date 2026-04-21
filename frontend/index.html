@@ -417,8 +417,27 @@
     .btn-submit .arrow{transition:transform .25s}
     .btn-submit:hover .arrow{transform:translateX(4px)}
 
-    .form-msg{background:rgba(180,150,66,.1);border:1px solid var(--gold);border-radius:6px;padding:20px;margin-top:16px}
-    .form-msg.dup{background:rgba(234,179,8,.08);border-color:#EAB308}
+    .form-msg{
+      background:var(--ink);color:var(--cream);
+      border:1px solid rgba(180,150,66,.3);border-radius:8px;
+      padding:28px;margin-top:20px;position:relative;overflow:hidden;
+      box-shadow:8px 8px 0 var(--gold);
+    }
+    .form-msg::before{
+      content:'';position:absolute;top:0;left:0;right:0;height:3px;
+      background:linear-gradient(90deg,var(--gold-d),var(--gold-l),var(--gold-d));
+    }
+    .form-msg .msg-badge{
+      font-family:var(--mono);font-size:10px;letter-spacing:.25em;text-transform:uppercase;
+      color:var(--gold);margin-bottom:10px;display:flex;align-items:center;gap:8px;
+    }
+    .form-msg .msg-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--gold)}
+    .form-msg .msg-title{font-family:var(--serif);font-size:24px;letter-spacing:-.01em;color:var(--cream);margin-bottom:8px}
+    .form-msg .msg-sub{color:var(--warm-l);font-size:14px;line-height:1.5}
+    .form-msg.dup{border-color:rgba(184,134,11,.3);box-shadow:8px 8px 0 #B8860B}
+    .form-msg.dup::before{background:linear-gradient(90deg,#8A6914,#B8860B,#8A6914)}
+    .form-msg.dup .msg-badge{color:#D4A017}
+    .form-msg.dup .msg-badge::before{background:#D4A017}
 
     /* ═════════════ MANIFESTO / BIG QUOTE ═════════════ */
     #manifesto{
@@ -627,7 +646,7 @@
       .txn-callout .txn-sub{font-size:9px!important}
       .txn-1{top:8%!important;left:5%!important}
       .txn-2{top:5%!important;right:5%!important}
-      .txn-3{display:none!important}
+      .txn-3{bottom:8%!important;right:5%!important}
       .txn-4{bottom:8%!important;left:5%!important}
       .corner-stamp{display:none}
       .nav-inner{padding:0 20px}
@@ -1000,14 +1019,14 @@
           </button>
         </form>
         <div id="sm" class="form-msg" style="display:none">
-          <p style="font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--gold-d);margin-bottom:6px">✓ CONFIRMED</p>
-          <p style="font-family:var(--serif);font-size:22px;letter-spacing:-.01em">You're on the list.</p>
-          <p style="color:var(--warm);font-size:13px;margin-top:6px">We'll reach out when Onyx is ready for you.</p>
+          <div class="msg-badge">Confirmed</div>
+          <p class="msg-title">You're on the list.</p>
+          <p class="msg-sub">We'll reach out when Onyx is ready for you.</p>
         </div>
         <div id="dm" class="form-msg dup" style="display:none">
-          <p style="font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:#B8860B;margin-bottom:6px">⚠ DUPLICATE</p>
-          <p style="font-family:var(--serif);font-size:22px;letter-spacing:-.01em">Already registered.</p>
-          <p style="color:var(--warm);font-size:13px;margin-top:6px">This email is on the waitlist.</p>
+          <div class="msg-badge">Already registered</div>
+          <p class="msg-title">You're already on it.</p>
+          <p class="msg-sub">This email is on the waitlist. We'll be in touch soon.</p>
         </div>
       </div>
     </div>
@@ -1145,13 +1164,14 @@
       <button type="submit" id="sb2" class="btn-submit"><span>Reserve my spot</span><span class="arrow">→</span></button>
     </form>
     <div id="sm2" class="form-msg" style="display:none">
-      <p style="font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--gold-d);margin-bottom:6px">✓ CONFIRMED</p>
-      <p style="font-family:var(--serif);font-size:22px">You're on the list.</p>
-      <p style="color:var(--warm);font-size:13px;margin-top:6px">We'll reach out when Onyx is ready.</p>
+      <div class="msg-badge">Confirmed</div>
+      <p class="msg-title">You're on the list.</p>
+      <p class="msg-sub">We'll reach out when Onyx is ready.</p>
     </div>
     <div id="dm2" class="form-msg dup" style="display:none">
-      <p style="font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:#B8860B;margin-bottom:6px">⚠ ALREADY REGISTERED</p>
-      <p style="font-family:var(--serif);font-size:22px">You're already on it.</p>
+      <div class="msg-badge">Already registered</div>
+      <p class="msg-title">You're already on it.</p>
+      <p class="msg-sub">This email is on the waitlist.</p>
     </div>
   </div>
 </div>
