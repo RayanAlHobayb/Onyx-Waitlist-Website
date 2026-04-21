@@ -186,7 +186,7 @@
 
     .hero-sub{
       font-size:17px; line-height:1.55; color:var(--warm); max-width:560px;
-      margin-bottom:36px; font-weight:400;
+      margin-bottom:10px; font-weight:400;
       animation:fadeUp .9s .28s both;
     }
 
@@ -447,10 +447,10 @@
     }
     .mani-inner{max-width:1200px;margin:0 auto;position:relative}
     .mani-label{
-      font-family:var(--mono); font-size:11px; letter-spacing:.3em; text-transform:uppercase;
-      margin-bottom:40px; display:flex; align-items:center; gap:14px; color:var(--warm);
+      margin-bottom:60px; margin-top:60px; height:1px; background:rgba(14,13,11,.12);
     }
-    .mani-label::before,.mani-label::after{content:'';flex:1;height:1px;background:rgba(14,13,11,.15)}
+    .mani-label:first-child{margin-top:0}
+    .mani-label:last-child{margin-bottom:0}
     .mani-text{
       font-family:var(--serif); font-weight:400;
       font-size:clamp(2.5rem,6vw,6rem); line-height:1; letter-spacing:-.035em;
@@ -692,8 +692,8 @@
         The first card<br>that rewards<br><i>your</i> <span class="underline">rent.</span>
       </h1>
       <p class="hero-sub">Earn points on your rent and everyday spending at partner merchants across the city. Your biggest monthly expense, finally working for you.</p>
+      <p style="font-family:var(--sans);font-size:14px;color:var(--warm);margin-bottom:36px;animation:fadeUp .9s .32s both">Coming to Riyadh soon</p>
 
-      <p style="font-family:var(--sans);font-size:14px;color:var(--warm);margin-bottom:20px;animation:fadeUp .9s .36s both">Coming to Riyadh soon</p>
       <div class="hero-meta">
         <a href="#form-section" class="cta-btn" style="animation:fadeUp .9s .42s both"><span class="dot"></span>Join the Waitlist</a>
       </div>
