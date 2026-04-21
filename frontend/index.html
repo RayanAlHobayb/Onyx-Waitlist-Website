@@ -421,10 +421,12 @@
     .btn-submit:hover .arrow{transform:translateX(4px)}
 
     .form-msg{
-      padding:24px 0 0;margin-top:16px;
+      padding:48px 36px;margin-top:0;text-align:center;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      min-height:280px;
     }
-    .form-msg .msg-title{font-family:var(--serif);font-size:26px;letter-spacing:-.01em;margin-bottom:6px}
-    .form-msg .msg-sub{color:var(--warm);font-size:14px;line-height:1.5}
+    .form-msg .msg-title{font-family:var(--serif);font-size:clamp(32px,4vw,42px);letter-spacing:-.02em;margin-bottom:12px}
+    .form-msg .msg-sub{color:var(--warm);font-size:16px;line-height:1.6}
 
     /* ═════════════ MANIFESTO / BIG QUOTE ═════════════ */
     #manifesto{
