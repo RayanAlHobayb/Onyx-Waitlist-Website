@@ -610,19 +610,42 @@
 
     /* ── MOBILE ── */
     @media (max-width:920px){
-      .hero-inner{grid-template-columns:1fr;gap:80px}
-      .card-scene{min-height:460px}
-      .corner-stamp{width:64px;height:64px;top:14px;right:14px;font-size:8px}
+      .hero-inner{grid-template-columns:1fr;gap:40px;padding:0 20px}
+      #hero{height:auto;min-height:100vh;padding-top:80px;padding-bottom:40px}
+      .hero-h1{font-size:clamp(2.8rem,10vw,4rem)}
+      .hero-left-col{gap:0}
+      .card-scene{min-height:320px;max-height:360px;border-radius:16px}
+      .card-tilt{animation:none!important}
+      .card-body{width:240px!important;height:152px!important;padding:16px 18px!important;border-radius:12px!important}
+      .card-brand{font-size:18px!important}
+      .card-chip{width:34px!important;height:24px!important}
+      .card-num{font-size:11px!important;margin-bottom:10px!important}
+      .card-val{font-size:12px!important}
+      .txn-callout{padding:8px 12px!important;border-radius:10px!important}
+      .txn-callout .txn-icon{width:28px!important;height:28px!important;border-radius:7px!important}
+      .txn-callout .txn-title{font-size:11px!important}
+      .txn-callout .txn-sub{font-size:9px!important}
+      .txn-1{top:8%!important;left:5%!important}
+      .txn-2{top:5%!important;right:5%!important}
+      .txn-3{display:none!important}
+      .txn-4{bottom:8%!important;left:5%!important}
+      .corner-stamp{display:none}
+      .nav-inner{padding:0 20px}
+      .nav-logo{font-size:28px}
       .form-wrap{grid-template-columns:1fr;gap:40px}
       .how-head{grid-template-columns:1fr;gap:24px}
       .how-steps{grid-template-columns:1fr}
-      .step{border-right:none;border-bottom:1px solid rgba(245,241,232,.1)}
-
+      .step{border-right:none;border-bottom:1px solid rgba(245,241,232,.1);padding:40px 24px 60px}
+      .step-num{font-size:100px!important;top:20px;right:20px}
+      .part-head{grid-template-columns:1fr;gap:24px}
       .why-grid-simple{grid-template-columns:1fr}
       .wf-item{padding:28px 22px}
       .foot-row{flex-direction:column;gap:16px;text-align:center}
+      .foot-big{font-size:clamp(4rem,16vw,8rem)}
       .annot, .hero-stat-chip, .rotating-ring{display:none}
       .topbar-left .topbar-meta{display:none}
+      #bottom-bar{padding:0 16px}
+      .bb-brand{font-size:22px}
     }
   </style>
 </head>
