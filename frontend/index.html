@@ -7,394 +7,1159 @@
   <meta name="description" content="Onyx is a credit card that rewards you for paying rent. Join the waitlist.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400;1,6..72,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
-    :root{--gold:#B49642;--gold-l:#C9AB56;--gold-d:#957D35;--ink:#1A1918;--ink2:#2C2B28;--warm:#8A8680;--warm-l:#B5B0A8;--cream:#FAF8F4;--cream2:#F2EFE8;--cream3:#E8E4DB;--card-dk:#1E1D1B;--sans:'Plus Jakarta Sans',system-ui,sans-serif;--serif:'Newsreader',Georgia,serif}
-    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-    html{scroll-behavior:smooth}body{background:var(--cream);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
-    a{color:inherit;text-decoration:none}
-
-    @keyframes rise{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:translateY(0)}}
-    @keyframes cardFloat{0%,100%{transform:rotate(-2deg) translateY(0)}50%{transform:rotate(0deg) translateY(-12px)}}
-    @keyframes shimmer{0%{transform:translateX(-150%) rotate(25deg)}100%{transform:translateX(150%) rotate(25deg)}}
-    @keyframes notifFloat1{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-    @keyframes notifFloat2{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-    @keyframes notifFloat3{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-    @keyframes orbitSlow{0%{transform:translate(0,0)}25%{transform:translate(15px,-10px)}50%{transform:translate(0,-18px)}75%{transform:translate(-15px,-10px)}100%{transform:translate(0,0)}}
-    @keyframes driftX{0%,100%{transform:translateX(0)}50%{transform:translateX(20px)}}
-    @keyframes driftY{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
-    @keyframes pulse-ring{0%{transform:scale(1);opacity:.3}100%{transform:scale(1.8);opacity:0}}
-
-    .rise{animation:rise .85s cubic-bezier(.22,1,.36,1) both;opacity:0}
-    .d1{animation-delay:.05s}.d2{animation-delay:.15s}.d3{animation-delay:.28s}.d4{animation-delay:.42s}.d5{animation-delay:.55s}.d6{animation-delay:.7s}
-    @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-    .sr{opacity:0;transform:translateY(24px);transition:all .7s cubic-bezier(.22,1,.36,1)}.sr.in{opacity:1;transform:none}
-
-    .nav-wrap{position:fixed;top:0;left:0;right:0;z-index:100;padding:10px 20px;opacity:0;transform:translateY(-100%);pointer-events:none;transition:all .4s cubic-bezier(.22,1,.36,1)}
-    .nav-wrap.on{opacity:1;transform:none;pointer-events:auto}
-
-    .step{background:white;border:1px solid rgba(0,0,0,.06);border-radius:20px;padding:36px;transition:all .3s;position:relative}
-    .step:hover{transform:translateY(-3px);box-shadow:0 16px 48px rgba(0,0,0,.06);border-color:rgba(180,150,66,.15)}
-    .step-num{width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,var(--gold),var(--gold-d));color:white;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-bottom:20px;position:relative}
-    .step-num::after{content:'';position:absolute;inset:0;border-radius:14px;animation:pulse-ring 2.5s ease-out infinite;border:2px solid var(--gold)}
-
-    .pill{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:99px;font-size:15px;font-weight:500;background:white;border:1px solid rgba(0,0,0,.06);transition:all .2s;cursor:default}
-    .pill:hover{border-color:rgba(180,150,66,.2);background:rgba(180,150,66,.04)}
-    .feat{padding-bottom:28px;border-bottom:1px solid var(--cream3)}.feat:nth-child(n+4){border-bottom:none;padding-bottom:0}
-    details summary{list-style:none;cursor:pointer}details summary::-webkit-details-marker{display:none}details[open] .chev{transform:rotate(180deg)}
-
-    .field{width:100%;padding:15px 18px;border-radius:14px;font-size:15px;font-family:var(--sans);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--cream);outline:none;transition:all .2s}
-    .field::placeholder{color:rgba(255,255,255,.3)}.field:focus{border-color:rgba(180,150,66,.4);box-shadow:0 0 0 3px rgba(180,150,66,.08)}
-    select.field{appearance:none;cursor:pointer}select.field option{background:var(--card-dk);color:var(--cream)}
-    .btn-gold{width:100%;padding:16px;border-radius:14px;font-size:15px;font-weight:600;font-family:var(--sans);background:var(--gold);color:white;border:none;cursor:pointer;transition:all .2s}
-    .btn-gold:hover{background:var(--gold-l)}.btn-gold:active{background:var(--gold-d);transform:scale(.98)}
-
-    /* Credit card shine */
-    .card-visual{position:relative;overflow:hidden}
-    .card-visual::after{content:'';position:absolute;top:-50%;left:-50%;width:60%;height:200%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);transform:translateX(-150%) rotate(25deg);animation:shimmer 4s ease-in-out infinite;animation-delay:2s;pointer-events:none}
-
-    /* Floating decorative elements */
-    .float-orb{position:absolute;border-radius:50%;pointer-events:none;opacity:.5}
-    .float-diamond{position:absolute;pointer-events:none;opacity:.12;transform:rotate(45deg)}
-
-    /* Steps connector line */
-    .steps-connector{position:absolute;top:60px;left:0;right:0;height:2px;z-index:0}
-    .steps-connector::before{content:'';position:absolute;top:0;left:15%;right:15%;height:2px;background:linear-gradient(90deg,transparent,var(--cream3),var(--gold),var(--cream3),transparent)}
-
-    .sec{padding:120px 24px}
-
-    /* Mobile card shown below form on small screens */
-    .hero-card-mobile{display:none}
-
-    @media(max-width:768px){
-      .hero-grid{grid-template-columns:1fr!important}
-      .hero-right{display:none!important}
-      .hero-card-mobile{display:flex!important;justify-content:center;padding:48px 24px 0}
-      .g2{grid-template-columns:1fr!important;gap:48px!important}
-      .g3{grid-template-columns:1fr!important;gap:16px!important}
-      .sec{padding:80px 20px!important}
-      .hero-left{padding:40px 24px 56px!important}
-      .steps-connector{display:none}
+    :root {
+      --gold:#B49642; --gold-l:#D4B96A; --gold-d:#8A722C;
+      --ink:#0E0D0B; --ink2:#1A1918;
+      --cream:#F5F1E8; --cream2:#EDE7D6; --cream3:#1F1D17;
+      --warm:#6B665E; --warm-l:#B5B0A8;
+      --red:#E54B2A;
+      --sans:'Plus Jakarta Sans',system-ui,sans-serif;
+      --serif:'Instrument Serif',Georgia,serif;
+      --mono:'JetBrains Mono',monospace;
     }
-    @media(min-width:769px) and (max-width:1100px){
-      .hero-right{padding:20px!important}
-      .hero-right .card-visual{width:300px!important;height:190px!important}
-      .hero-right [class*="rise d4"]{right:-40px!important}
-      .hero-right [class*="rise d5"]{left:-50px!important}
-      .hero-right [class*="rise d6"]{right:-20px!important}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{background:var(--cream);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden;padding-bottom:64px}
+    a{color:inherit;text-decoration:none}
+    ::selection{background:var(--gold);color:var(--ink)}
+    @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+    /* ── KEYFRAMES ── */
+    @keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:none}}
+    @keyframes tickerMove{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    @keyframes tickerRev{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+    @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+    @keyframes rotate360{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+    @keyframes rotate360Rev{from{transform:rotate(360deg)}to{transform:rotate(0)}}
+    @keyframes floatCard{0%,100%{transform:translateY(0) rotateZ(-3deg)}50%{transform:translateY(-18px) rotateZ(-1deg)}}
+    @keyframes shimmer{0%{transform:translateX(-200%) skewX(-15deg)}100%{transform:translateX(220%) skewX(-15deg)}}
+    @keyframes scroll-indicator{0%{transform:translateY(0);opacity:1}60%{transform:translateY(14px);opacity:0}100%{transform:translateY(0);opacity:0}}
+    @keyframes grainShift{0%,100%{transform:translate(0,0)}25%{transform:translate(-2%,1%)}50%{transform:translate(1%,-2%)}75%{transform:translate(2%,2%)}}
+    @keyframes crossPulse{0%,100%{opacity:.2}50%{opacity:.5}}
+    @keyframes countUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+    @keyframes borderSlide{0%{background-position:-200% 0}100%{background-position:200% 0}}
+    @keyframes pulseDot{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.6);opacity:.4}}
+
+    /* Grain overlay */
+    body::before{
+      content:'';position:fixed;inset:-10%;pointer-events:none;z-index:1000;opacity:.06;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      animation:grainShift 8s steps(4) infinite; mix-blend-mode:multiply;
+    }
+
+    /* Scroll reveal */
+    .sr{opacity:0;transform:translateY(32px);transition:opacity .9s cubic-bezier(.22,1,.36,1),transform .9s cubic-bezier(.22,1,.36,1)}
+    .sr.in{opacity:1;transform:none}
+
+    /* ═════════════ TICKER ═════════════ */
+    .ticker-rail{
+      background:var(--ink); color:var(--cream); position:relative;
+      overflow:hidden; height:44px; display:flex; align-items:center;
+      border-bottom:1px solid rgba(180,150,66,.2);
+      z-index:10;
+    }
+    .ticker-rail.gold{ background:var(--gold); color:var(--ink); border-color:rgba(0,0,0,.15) }
+    .ticker-track{display:flex;gap:36px;white-space:nowrap;width:max-content;animation:tickerMove 60s linear infinite}
+    .ticker-rail.gold .ticker-track{animation:tickerRev 70s linear infinite}
+    .ticker-item{font-family:var(--mono);font-size:12px;letter-spacing:.1em;font-weight:500;display:flex;align-items:center;gap:36px}
+    .ticker-item::after{content:'◆';color:var(--gold);opacity:.6}
+    .ticker-rail.gold .ticker-item::after{color:var(--ink);opacity:.45}
+
+    /* ═════════════ TOP NAV (always visible) ═════════════ */
+    #site-nav{
+      position:fixed; top:0; left:0; right:0; z-index:1100;
+      height:72px; background:transparent; backdrop-filter:none;
+      border-bottom:1px solid transparent;
+      display:flex; align-items:center; padding:0;
+      transition:background .35s ease, border-color .35s ease, height .35s ease;
+    }
+    #site-nav.scrolled{
+      background:rgba(245,241,232,.92); backdrop-filter:blur(16px);
+      border-bottom:1px solid rgba(14,13,11,.08); height:60px;
+    }
+    .nav-inner{
+      width:100%; max-width:1400px; margin:0 auto;
+      padding:0 48px; display:flex; align-items:center; justify-content:space-between;
+    }
+    .nav-logo{ font-family:var(--serif); font-size:36px; letter-spacing:.1em; color:var(--gold); font-weight:600; text-transform:uppercase; }
+    .nav-join{
+      background:var(--ink); color:var(--gold);
+      padding:12px 24px; border-radius:99px;
+      font-family:var(--sans); font-size:14px; font-weight:700; letter-spacing:.04em;
+      transition:all .3s; position:relative; overflow:hidden;
+      opacity:0; pointer-events:none; transform:translateY(-4px);
+      display:inline-flex; align-items:center; gap:10px;
+    }
+    .nav-join::after{content:'';position:absolute;inset:0;border-radius:99px;background:var(--gold-l);transform:scaleX(0);transform-origin:left;transition:transform .4s;z-index:-1}
+    #site-nav.scrolled .nav-join{ opacity:1; pointer-events:auto; transform:translateY(0); }
+    .nav-join:hover::after{ transform:scaleX(1); }
+    .nav-join:hover{ color:var(--ink); transform:translateY(-1px); }
+
+    /* ═════════════ BOTTOM BAR ═════════════ */
+    #bottom-bar{
+      position:fixed; bottom:0; left:0; right:0; z-index:1100;
+      height:64px; background:var(--gold); color:var(--ink);
+      display:flex; align-items:center; justify-content:space-between; padding:0 28px;
+      border-top:1px solid rgba(14,13,11,.12);
+      box-shadow:0 -4px 24px rgba(14,13,11,.12);
+      transform:translateY(100%);
+      transition:transform .5s cubic-bezier(.22,1,.36,1);
+    }
+    #bottom-bar.visible{ transform:translateY(0); }
+    .bb-brand{ font-family:var(--serif); font-size:28px; letter-spacing:-.01em; font-weight:400; }
+    .bb-right{ display:flex; align-items:center; gap:20px; }
+    .bb-cta{
+      background:var(--ink); color:var(--gold);
+      padding:12px 24px; border-radius:99px;
+      font-family:var(--sans); font-size:14px; font-weight:700; letter-spacing:.04em;
+      transition:all .25s; display:inline-flex; align-items:center; gap:10px;
+    }
+    .bb-cta:hover{ background:var(--ink2); transform:translateY(-1px); color:var(--gold-l); }
+
+    /* ═════════════ HERO ═════════════ */
+    #hero{
+      height:100vh; min-height:700px;
+      padding:0;
+      position:relative; overflow:hidden;
+      background:var(--cream);
+      display:flex; align-items:center;
+    }
+    .hero-left-col{
+      display:flex; flex-direction:column; justify-content:center;
+      gap:0; position:relative; z-index:2;
+    }
+    /* Hero-context button override (cream bg, so invert colors) */
+    .hero-meta .cta-btn{
+      background:var(--ink); color:var(--gold);
+    }
+    .hero-meta .cta-btn::after{ background:var(--gold); }
+    .hero-meta .cta-btn:hover{ color:var(--ink); }
+    #hero::before{
+      content:''; position:absolute; top:-10%; left:-5%; width:60%; height:80%;
+      background:radial-gradient(ellipse, rgba(180,150,66,.06), transparent 65%);
+      pointer-events:none; z-index:0;
+    }
+
+    /* Giant corner mark */
+    .corner-stamp{
+      position:absolute; top:28px; right:28px;
+      width:84px; height:84px; border-radius:50%;
+      border:1px solid var(--ink); display:flex; align-items:center; justify-content:center;
+      font-family:var(--mono); font-size:9px; letter-spacing:.1em; text-align:center; line-height:1.3;
+      animation:fadeUp 1s .3s both;
+    }
+    .corner-stamp::before{
+      content:''; position:absolute; inset:4px; border-radius:50%; border:1px dashed rgba(14,13,11,.2);
+      animation:rotate360 28s linear infinite;
+    }
+
+    /* Hero layout: asymmetric grid */
+    .hero-inner{
+      max-width:1400px; margin:0 auto; width:100%;
+      display:grid; grid-template-columns:1.1fr .9fr; gap:48px;
+      align-items:center;
+      position:relative;
+      padding:0 48px;
+    }
+
+    /* LEFT */
+    .hero-kicker{
+      font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase;
+      display:flex; align-items:center; gap:12px; margin-bottom:48px;
+      animation:fadeUp .9s .1s both;
+    }
+    .hero-kicker::before{content:'';width:32px;height:1px;background:var(--ink)}
+    .hero-kicker b{ background:var(--ink); color:var(--cream); padding:4px 10px; border-radius:3px; font-weight:700 }
+
+    .hero-h1{
+      font-family:var(--serif); font-weight:400;
+      font-size:clamp(3.8rem, 8.5vw, 9.5rem);
+      line-height:.93; letter-spacing:-.045em;
+      margin-top:.1em; margin-bottom:36px;
+      animation:fadeUp 1s .18s both;
+    }
+    .hero-h1 i{color:var(--gold);font-style:italic}
+    .hero-h1 .underline{position:relative;display:inline-block}
+    .hero-h1 .underline::after{content:'';position:absolute;left:0;right:0;bottom:.04em;height:6px;background:var(--gold);z-index:-1;opacity:.35}
+
+    .hero-sub{
+      font-size:17px; line-height:1.55; color:var(--warm); max-width:560px;
+      margin-bottom:36px; font-weight:400;
+      animation:fadeUp .9s .28s both;
+    }
+
+    /* Meta pills row */
+    .hero-meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:44px;animation:fadeUp .9s .36s both}
+    .meta-pill{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:8px 14px; border:1px solid var(--ink); border-radius:99px;
+      font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:.08em;
+      background:transparent; transition:all .2s;
+    }
+    .meta-pill.filled{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+    .meta-pill.gold{background:var(--gold);color:var(--ink);border-color:var(--gold)}
+    .meta-pill::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor}
+
+    /* RIGHT — Card scene */
+    .card-scene{
+      position:relative;
+      height:calc(100vh - 120px);
+      min-height:520px; max-height:760px;
+      display:flex; align-items:center; justify-content:center;
+      background:#181614;
+      border-radius:24px; overflow:hidden;
+    }
+    .card-scene::before{
+      content:''; position:absolute; inset:0; pointer-events:none; z-index:0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 40%, rgba(180,150,66,.1) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 20% 80%, rgba(180,150,66,.05) 0%, transparent 55%);
+    }
+    .card-scene::after{
+      content:''; position:absolute; inset:0; pointer-events:none;
+      background:radial-gradient(ellipse 55% 50% at 50% 50%, transparent 30%, rgba(0,0,0,.35) 100%);
+      z-index:1;
+    }
+    /* Map inside card-scene */
+    .map-bg{ position:absolute; inset:0; pointer-events:none; z-index:0; }
+    .map-bg svg{ width:100%; height:100%; }
+
+    /* Floating callout animations */
+    @keyframes float1{ 0%,100%{transform:translateY(0px)} 50%{transform:translateY(-10px)} }
+    @keyframes float2{ 0%,100%{transform:translateY(0px)} 50%{transform:translateY(-7px)} }
+    @keyframes float3{ 0%,100%{transform:translateY(0px)} 50%{transform:translateY(-12px)} }
+    @keyframes float4{ 0%,100%{transform:translateY(0px)} 50%{transform:translateY(-8px)} }
+
+    /* Transaction callouts */
+    .txn-callout{
+      position:absolute; z-index:6;
+      background:rgba(20,18,16,.85); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
+      border:1px solid rgba(180,150,66,.28);
+      border-radius:14px; padding:14px 18px;
+      display:flex; align-items:center; gap:12px;
+      color:var(--cream);
+      box-shadow:0 10px 36px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.07);
+      white-space:nowrap;
+    }
+    .txn-callout .txn-icon{
+      width:34px; height:34px; border-radius:9px; flex-shrink:0;
+      display:flex; align-items:center; justify-content:center;
+      background:rgba(180,150,66,.2);
+      color:var(--gold-l);
+    }
+    .txn-callout .txn-text{ display:flex; flex-direction:column; gap:3px; }
+    .txn-callout .txn-title{ font-size:13px; font-weight:600; letter-spacing:-.01em; }
+    .txn-callout .txn-sub{
+      font-family:var(--mono); font-size:11px; letter-spacing:.04em;
+      color:var(--gold-l);
+    }
+    .txn-1{ top:13%; left:8%; animation:fadeUp .6s .6s both, float1 5s 1.2s ease-in-out infinite }
+    .txn-2{ top:9%; right:10%; animation:fadeUp .6s .9s both, float2 6s 1.5s ease-in-out infinite }
+    .txn-3{ bottom:28%; right:7%; animation:fadeUp .6s 1.2s both, float3 5.5s 1.8s ease-in-out infinite }
+    .txn-4{ bottom:14%; left:7%; animation:fadeUp .6s 1.5s both, float4 6.5s 2.1s ease-in-out infinite }
+    @media (max-width:920px){
+      .txn-callout{ padding:8px 10px; }
+      .txn-callout .txn-title{ font-size:10px; }
+      .txn-callout .txn-sub{ font-size:9px; }
+      .txn-2{ right:4%; top:4% }
+      .txn-3{ display:none }
+      .txn-5{ right:4% }
+    }
+
+    /* 3D Card */
+    .card-wrap{position:relative;z-index:5;perspective:1400px;animation:fadeUp 1s .4s both}
+    .card-tilt{
+      transform-style:preserve-3d;
+      animation:floatCard 8s ease-in-out infinite;
+      transition:transform .12s ease-out;
+    }
+    .card-body{
+      width:380px; height:240px; border-radius:14px; padding:28px 30px;
+      display:flex; flex-direction:column; justify-content:space-between;
+      background:
+        radial-gradient(ellipse at 30% 20%, rgba(212,185,106,.18), transparent 55%),
+        linear-gradient(145deg, #1A1816 0%, #0B0A08 50%, #141210 100%);
+      color:var(--cream); position:relative; overflow:hidden;
+      border:1px solid rgba(212,185,106,.18);
+      box-shadow:
+        0 60px 120px -30px rgba(0,0,0,.45),
+        0 30px 60px -15px rgba(0,0,0,.3),
+        inset 0 1px 0 rgba(255,255,255,.07);
+    }
+    .card-shimmer{
+      position:absolute;top:-50%;left:0;width:35%;height:200%;
+      background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);
+      animation:shimmer 5.5s ease-in-out infinite 2s;pointer-events:none;z-index:5;
+    }
+    .card-specular{
+      position:absolute; inset:0; border-radius:14px; pointer-events:none; z-index:4;
+      background:radial-gradient(ellipse 60% 45% at 50% 30%, rgba(255,255,255,.06), transparent 70%);
+      transition:background .1s;
+    }
+    .card-noise{
+      position:absolute;inset:0;border-radius:14px;pointer-events:none;z-index:2;opacity:.15;mix-blend-mode:overlay;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    .card-brand{font-family:var(--serif);font-size:22px;letter-spacing:.1em;color:var(--gold);text-transform:uppercase;font-weight:600;position:relative;z-index:3}
+    .card-chip{
+      width:42px;height:30px;border-radius:5px;position:relative;overflow:hidden;z-index:3;
+      background:linear-gradient(145deg,#D4B96A,#B49642,#8A722C);
+    }
+    .card-chip::before{content:'';position:absolute;inset:2px;border:1px solid rgba(255,255,255,.2);border-radius:3px}
+    .card-chip::after{content:'';position:absolute;top:50%;left:0;right:0;height:1px;background:rgba(255,255,255,.15)}
+    .card-meta{position:relative;z-index:3}
+    .card-num{font-family:var(--mono);color:rgba(245,241,232,.25);font-size:13px;letter-spacing:.35em;margin-bottom:14px}
+    .card-row{display:flex;justify-content:space-between;align-items:flex-end}
+    .card-label{font-family:var(--mono);font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:rgba(245,241,232,.22);margin-bottom:4px}
+    .card-val{font-size:13px;font-weight:500;letter-spacing:.08em;color:rgba(245,241,232,.7)}
+
+    /* ── FLOATING WAITLIST BUTTON ── */
+    #float-btn{
+      position:fixed; bottom:28px; right:28px; z-index:600;
+      background:var(--ink); color:var(--gold);
+      font-family:var(--mono); font-size:12px; font-weight:700; letter-spacing:.2em; text-transform:uppercase;
+      padding:16px 28px; border-radius:99px; border:none; cursor:pointer;
+      display:flex; align-items:center; gap:10px;
+      box-shadow:0 8px 32px rgba(14,13,11,.3), 0 0 0 1px rgba(180,150,66,.2);
+      transition:all .3s cubic-bezier(.22,1,.36,1);
+      animation:fadeUp .8s 1.2s both;
+    }
+    #float-btn:hover{ background:var(--gold); color:var(--ink); transform:translateY(-3px); box-shadow:0 16px 40px rgba(180,150,66,.35); }
+    #float-btn .fbdot{ width:8px; height:8px; border-radius:50%; background:currentColor; animation:blink 1.5s step-end infinite; }
+    #float-btn.hidden{ transform:translateY(120px); opacity:0; pointer-events:none; }
+
+    /* ── WAITLIST MODAL ── */
+    #wl-modal{
+      position:fixed; inset:0; z-index:700;
+      display:flex; align-items:flex-end; justify-content:center;
+      pointer-events:none; padding:0 16px 24px;
+    }
+    #wl-modal.open{ pointer-events:auto; }
+    .modal-backdrop{
+      position:absolute; inset:0; background:rgba(14,13,11,.5); backdrop-filter:blur(6px);
+      opacity:0; transition:opacity .35s;
+    }
+    #wl-modal.open .modal-backdrop{ opacity:1; }
+    .modal-sheet{
+      position:relative; z-index:1; width:100%; max-width:520px;
+      background:var(--cream); border-radius:16px;
+      padding:36px; border:1px solid var(--gold);
+      box-shadow:12px 12px 0 var(--gold), 16px 16px 0 var(--ink);
+      transform:translateY(120%); transition:transform .45s cubic-bezier(.22,1,.36,1);
+    }
+    #wl-modal.open .modal-sheet{ transform:none; }
+    .modal-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; }
+    .modal-title{ font-family:var(--serif); font-size:28px; font-weight:400; letter-spacing:-.02em; }
+    .modal-title i{ color:var(--gold); font-style:italic; }
+    .modal-close{ background:none; border:1px solid rgba(14,13,11,.2); border-radius:50%; width:36px; height:36px; cursor:pointer; font-size:18px; display:flex; align-items:center; justify-content:center; transition:all .2s; }
+    .modal-close:hover{ background:var(--ink); color:var(--cream); border-color:var(--ink); }
+
+    /* ═════════════ FORM SECTION ═════════════ */
+    #form-section{
+      padding:100px 24px;
+      background:var(--ink); color:var(--cream);
+      position:relative; overflow:hidden;
+    }
+    .form-wrap{
+      max-width:1400px; margin:0 auto;
+      display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center;
+    }
+    .form-l h2{
+      font-family:var(--serif); font-size:clamp(3rem,6vw,5.5rem); font-weight:400;
+      line-height:.95; letter-spacing:-.035em; margin-bottom:28px;
+    }
+    .form-l h2 i{color:var(--gold);font-style:italic}
+    .form-l .lede{color:var(--warm-l); font-size:16px; line-height:1.65; max-width:400px; margin-bottom:36px}
+
+    .form-perks{display:flex;flex-direction:column;gap:14px}
+    .perk-row{
+      display:flex;align-items:center;gap:14px;
+      font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--warm-l);
+    }
+    .perk-row svg{color:var(--gold);flex-shrink:0}
+
+    /* Form r */
+    .form-card{
+      background:var(--cream); color:var(--ink); border-radius:8px;
+      padding:36px; position:relative;
+      border:1px solid var(--gold);
+      box-shadow:12px 12px 0 var(--gold), 16px 16px 0 var(--ink);
+    }
+
+    .form-row{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+    .field-label{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--warm);display:flex;align-items:center;gap:6px}
+    .field-label span{color:var(--red)}
+    .field{
+      width:100%; padding:14px 0; border:none; border-bottom:1.5px solid var(--ink);
+      font-size:16px; font-family:var(--sans); background:transparent; color:var(--ink);
+      outline:none; transition:border-color .2s;
+    }
+    .field::placeholder{color:rgba(14,13,11,.3)}
+    .field:focus{border-color:var(--gold)}
+    select.field{appearance:none;cursor:pointer;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%230E0D0B' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right center}
+    select.field option{background:var(--cream);color:var(--ink)}
+    .btn-submit{
+      width:100%; padding:18px; margin-top:8px;
+      background:var(--ink); color:var(--cream);
+      border:none; cursor:pointer; border-radius:4px;
+      font-family:var(--mono); font-size:12px; font-weight:700; letter-spacing:.25em; text-transform:uppercase;
+      position:relative; overflow:hidden; transition:all .25s;
+      display:flex; align-items:center; justify-content:center; gap:12px;
+    }
+    .btn-submit::after{
+      content:'';position:absolute;top:0;left:-60%;width:40%;height:100%;
+      background:rgba(212,185,106,.3);transform:skewX(-15deg);transition:left .5s;
+    }
+    .btn-submit:hover{background:var(--gold);color:var(--ink);transform:translateY(-2px)}
+    .btn-submit:hover::after{left:120%}
+    .btn-submit .arrow{transition:transform .25s}
+    .btn-submit:hover .arrow{transform:translateX(4px)}
+
+    .form-msg{background:rgba(180,150,66,.1);border:1px solid var(--gold);border-radius:6px;padding:20px;margin-top:16px}
+    .form-msg.dup{background:rgba(234,179,8,.08);border-color:#EAB308}
+
+    /* ═════════════ MANIFESTO / BIG QUOTE ═════════════ */
+    #manifesto{
+      padding:140px 24px; background:var(--cream);
+      position:relative; overflow:hidden;
+    }
+    .mani-inner{max-width:1200px;margin:0 auto;position:relative}
+    .mani-label{
+      font-family:var(--mono); font-size:11px; letter-spacing:.3em; text-transform:uppercase;
+      margin-bottom:40px; display:flex; align-items:center; gap:14px; color:var(--warm);
+    }
+    .mani-label::before,.mani-label::after{content:'';flex:1;height:1px;background:rgba(14,13,11,.15)}
+    .mani-text{
+      font-family:var(--serif); font-weight:400;
+      font-size:clamp(2.5rem,6vw,6rem); line-height:1; letter-spacing:-.035em;
+      text-align:center; text-wrap:balance;
+    }
+    .mani-text i{color:var(--gold);font-style:italic}
+    .mani-text u{
+      text-decoration:none; position:relative;
+      background-image:linear-gradient(transparent 65%, rgba(180,150,66,.45) 65%, rgba(180,150,66,.45) 92%, transparent 92%);
+      padding:0 .04em;
+    }
+    .mani-sig{
+      display:flex;align-items:center;justify-content:center;gap:14px;margin-top:50px;
+      font-family:var(--mono); font-size:10px; letter-spacing:.25em; text-transform:uppercase; color:var(--warm);
+    }
+    .mani-sig::before,.mani-sig::after{content:'';width:40px;height:1px;background:var(--warm)}
+
+    /* ═════════════ HOW IT WORKS ═════════════ */
+    #how{
+      padding:120px 0 0; background:var(--ink); color:var(--cream);
+      position:relative; overflow:hidden;
+    }
+    .how-head{max-width:1400px;margin:0 auto 80px;padding:0 24px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end}
+    .how-label{font-family:var(--mono);font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;display:flex;align-items:center;gap:10px}
+    .how-label::before{content:'';width:30px;height:1px;background:var(--gold)}
+    .how-head h2{font-family:var(--serif);font-size:clamp(3rem,6vw,5.5rem);font-weight:400;line-height:.95;letter-spacing:-.035em}
+    .how-head h2 i{color:var(--gold);font-style:italic}
+    .how-head-right p{color:var(--warm-l);font-size:16px;line-height:1.65;max-width:380px}
+
+    .how-steps{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid rgba(245,241,232,.1)}
+    .step{
+      padding:60px 48px 80px;
+      border-right:1px solid rgba(245,241,232,.1);
+      position:relative; overflow:hidden;
+      transition:background .3s;
+    }
+    .step:last-child{border-right:none}
+    .step:hover{background:rgba(180,150,66,.05)}
+    .step-num{
+      font-family:var(--serif); font-size:160px; font-weight:400; line-height:1;
+      color:rgba(180,150,66,.08); position:absolute; top:30px; right:30px;
+      transition:color .4s;
+    }
+    .step:hover .step-num{color:rgba(180,150,66,.2)}
+    .step-idx{
+      font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--gold);
+      margin-bottom:200px;display:flex;align-items:center;gap:10px;
+    }
+    .step-idx::before{content:'';width:8px;height:8px;background:var(--gold);border-radius:50%}
+    .step h3{font-family:var(--serif);font-size:36px;font-weight:400;line-height:1.1;margin-bottom:16px;letter-spacing:-.02em}
+    .step h3 i{color:var(--gold);font-style:italic}
+    .step p{color:var(--warm-l);font-size:15px;line-height:1.65;max-width:320px}
+
+    /* Arrow connector between steps — removed */
+
+    /* ═════════════ PARTNERS ═════════════ */
+    #partners{padding:140px 0 0;background:var(--cream);color:var(--ink);position:relative;overflow:hidden}
+    .part-head{max-width:1400px;margin:0 auto 60px;padding:0 24px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end}
+    .part-head h2{font-family:var(--serif);font-size:clamp(2.8rem,5.5vw,5rem);font-weight:400;line-height:.95;letter-spacing:-.035em}
+    .part-head h2 i{color:var(--gold);font-style:italic}
+    .part-head p{color:var(--warm);font-size:16px;line-height:1.65;max-width:380px}
+
+    .marquee-col{overflow:hidden;padding:10px 0;border-top:1px solid rgba(14,13,11,.1);border-bottom:1px solid rgba(14,13,11,.1)}
+    .marquee-col+.marquee-col{border-top:none}
+    .marquee-track{display:flex;width:max-content;gap:0}
+    .marquee-a{animation:tickerMove 50s linear infinite}
+    .marquee-b{animation:tickerRev 38s linear infinite}
+    .marquee-c{animation:tickerMove 60s linear infinite}
+    .part-pill{
+      display:inline-flex;align-items:center;gap:12px;
+      padding:28px 44px; white-space:nowrap;
+      font-family:var(--serif);font-size:38px;font-weight:400;letter-spacing:-.01em;
+      color:var(--ink); position:relative;
+    }
+    .part-pill::after{content:'✦';color:var(--gold);font-size:20px;margin-left:32px}
+    .part-pill i{color:var(--gold);font-style:italic;margin-left:12px}
+    .marquee-col:nth-child(even) .part-pill{color:var(--warm)}
+
+    .marquee-col+.marquee-col{ padding-bottom:120px }
+
+    /* ═════════════ WHY ═════════════ */
+    #why{padding:100px 24px;background:var(--ink);color:var(--cream)}
+    .why-grid-simple{
+      display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+      background:rgba(255,255,255,.07); border-radius:12px; overflow:hidden; margin-top:56px;
+    }
+    .wf-item{
+      background:var(--ink); padding:36px 32px; position:relative;
+      transition:background .3s;
+    }
+    .wf-item::after{
+      content:''; position:absolute; top:0; left:0; right:0; height:2px;
+      background:linear-gradient(90deg,var(--gold-d),var(--gold-l));
+      opacity:0; transition:opacity .3s;
+    }
+    .wf-item:hover{ background:rgba(180,150,66,.05); }
+    .wf-item:hover::after{ opacity:1; }
+    .wf-num{ font-family:var(--serif); font-size:11px; color:rgba(180,150,66,.35); letter-spacing:.15em; margin-bottom:14px; }
+
+    /* ═════════════ FAQ ═════════════ */
+    #faq{padding:140px 24px;background:var(--cream);position:relative}
+    .faq-inner{max-width:1000px;margin:0 auto}
+    .faq-head{text-align:center;margin-bottom:60px}
+    .faq-head .mlabel{font-family:var(--mono);font-size:11px;letter-spacing:.3em;color:var(--warm);margin-bottom:18px;display:block}
+    .faq-head h2{font-family:var(--serif);font-size:clamp(2.8rem,5vw,4.5rem);font-weight:400;line-height:1;letter-spacing:-.03em}
+    .faq-head h2 i{color:var(--gold);font-style:italic}
+    details{border-top:1px solid rgba(14,13,11,.15)}
+    details:last-of-type{border-bottom:1px solid rgba(14,13,11,.15)}
+    details summary{list-style:none;cursor:pointer;padding:28px 0;display:flex;justify-content:space-between;align-items:center;gap:16px;transition:padding .25s}
+    details summary:hover{padding-left:10px}
+    details summary::-webkit-details-marker{display:none}
+    .faq-num{font-family:var(--mono);font-size:11px;letter-spacing:.15em;color:var(--warm);margin-right:18px}
+    .faq-q{font-family:var(--serif);font-size:clamp(22px,2.2vw,30px);font-weight:400;letter-spacing:-.01em;flex:1}
+    details[open] .faq-q{color:var(--gold-d)}
+    .faq-icon{
+      width:36px;height:36px;border-radius:50%;border:1px solid var(--ink);
+      display:flex;align-items:center;justify-content:center;flex-shrink:0;
+      transition:all .3s;
+    }
+    details[open] .faq-icon{background:var(--ink);color:var(--cream);transform:rotate(45deg)}
+    details p{color:var(--warm);line-height:1.75;padding:0 0 32px 48px;font-size:15px;max-width:720px}
+
+    /* ═════════════ CTA ═════════════ */
+    #cta{
+      padding:140px 24px; background:var(--gold); color:var(--ink);
+      position:relative; overflow:hidden; text-align:center;
+    }
+    #cta::before{
+      content:'';position:absolute;inset:0;
+      background-image:
+        linear-gradient(to right, rgba(14,13,11,.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(14,13,11,.06) 1px, transparent 1px);
+      background-size:60px 60px;
+      mask-image:radial-gradient(ellipse 70% 70% at 50% 50%, black 40%, transparent 85%);
+      pointer-events:none;
+    }
+    .cta-inner{max-width:1000px;margin:0 auto;position:relative;z-index:1}
+    .cta-kicker{font-family:var(--mono);font-size:11px;letter-spacing:.3em;text-transform:uppercase;margin-bottom:30px;display:flex;justify-content:center;align-items:center;gap:12px}
+    .cta-kicker::before,.cta-kicker::after{content:'';width:40px;height:1px;background:var(--ink)}
+    .cta-inner h2{
+      font-family:var(--serif); font-size:clamp(3rem,8vw,7rem); font-weight:400;
+      line-height:.9; letter-spacing:-.04em; margin-bottom:40px;
+    }
+    .cta-inner h2 i{font-style:italic;position:relative}
+    .cta-inner p{font-size:18px;line-height:1.6;margin-bottom:48px;max-width:520px;margin-left:auto;margin-right:auto;color:rgba(14,13,11,.7)}
+    .cta-btn{
+      display:inline-flex; align-items:center; gap:16px;
+      background:var(--ink); color:var(--gold);
+      padding:22px 48px; border-radius:99px;
+      font-family:var(--sans); font-size:16px; font-weight:700; letter-spacing:.04em;
+      transition:all .3s; position:relative; overflow:hidden;
+    }
+    .cta-btn::after{content:'';position:absolute;inset:0;border-radius:99px;background:var(--gold-l);transform:scaleX(0);transform-origin:left;transition:transform .4s;z-index:-1}
+    .cta-btn:hover::after{transform:scaleX(1)}
+    .cta-btn:hover{color:var(--ink);transform:translateY(-3px)}
+    .cta-btn .dot{width:8px;height:8px;background:currentColor;border-radius:50%;animation:blink 1.5s step-end infinite}
+
+    /* ═════════════ FOOTER ═════════════ */
+    footer{
+      padding:80px 24px 36px; background:var(--ink); color:var(--cream);
+      position:relative; overflow:hidden;
+    }
+    .foot-big{
+      font-family:var(--serif); font-size:clamp(6rem,18vw,18rem); font-weight:400;
+      line-height:.85; letter-spacing:-.06em; color:var(--gold);
+      text-align:center; margin-bottom:30px; opacity:.9;
+    }
+    .foot-row{
+      max-width:1400px; margin:0 auto;
+      display:flex; justify-content:space-between; align-items:center;
+      font-family:var(--mono); font-size:11px; letter-spacing:.15em; text-transform:uppercase;
+      color:var(--warm-l); padding-top:30px; border-top:1px solid rgba(245,241,232,.08);
+    }
+
+    /* Toast */
+    #toast{position:fixed;top:68px;left:0;right:0;z-index:10000;display:none;justify-content:center}
+
+    /* ── MOBILE ── */
+    @media (max-width:920px){
+      .hero-inner{grid-template-columns:1fr;gap:80px}
+      .card-scene{min-height:460px}
+      .corner-stamp{width:64px;height:64px;top:14px;right:14px;font-size:8px}
+      .form-wrap{grid-template-columns:1fr;gap:40px}
+      .how-head{grid-template-columns:1fr;gap:24px}
+      .how-steps{grid-template-columns:1fr}
+      .step{border-right:none;border-bottom:1px solid rgba(245,241,232,.1)}
+
+      .why-grid-simple{grid-template-columns:1fr}
+      .wf-item{padding:28px 22px}
+      .foot-row{flex-direction:column;gap:16px;text-align:center}
+      .annot, .hero-stat-chip, .rotating-ring{display:none}
+      .topbar-left .topbar-meta{display:none}
     }
   </style>
 </head>
 <body>
 
-<!-- Nav -->
-<div id="nav" class="nav-wrap">
-  <div style="max-width:1200px;margin:0 auto;background:rgba(250,248,244,.92);backdrop-filter:blur(20px);border:1px solid rgba(0,0,0,.06);border-radius:16px;padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between">
-    <span style="font-family:var(--serif);color:var(--gold);font-size:18px;font-weight:600;letter-spacing:.1em">ONYX</span>
-    <a href="#top" style="font-size:13px;font-weight:600;color:white;background:var(--gold);padding:10px 26px;border-radius:99px;transition:background .2s;cursor:pointer" onmouseover="this.style.background='var(--gold-l)'" onmouseout="this.style.background='var(--gold)'">Join Waitlist</a>
+<!-- ── SCROLLING NAV (must be first in DOM for JS to find it) ── -->
+<nav id="site-nav">
+  <div class="nav-inner">
+    <a href="#" style="text-decoration:none;display:flex;align-items:baseline;gap:9px">
+      <span class="nav-logo">ONYX</span>
+      <span style="font-family:var(--mono);font-size:12px;letter-spacing:.28em;color:var(--warm);font-weight:600">CARD</span>
+    </a>
+    <a href="#form-section" class="nav-join"><span class="dot" style="width:7px;height:7px;border-radius:50%;background:currentColor;animation:blink 1.5s step-end infinite;flex-shrink:0"></span>Join the Waitlist</a>
+  </div>
+</nav>
+
+<!-- ================ HERO ================ -->
+<section id="hero">
+
+  <div class="hero-inner">
+    <!-- LEFT -->
+    <div class="hero-left-col">
+      <h1 class="hero-h1">
+        The first card<br>that rewards<br><i>your</i> <span class="underline">rent.</span>
+      </h1>
+      <p class="hero-sub">Earn points on your rent and everyday spending at partner merchants across the city. Your biggest monthly expense, finally working for you.</p>
+
+      <div class="hero-meta">
+        <a href="#form-section" class="cta-btn" style="animation:fadeUp .9s .36s both"><span class="dot"></span>Join the Waitlist</a>
+      </div>
+      <p style="font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--warm);margin-top:8px;animation:fadeUp .9s .5s both">Coming to Riyadh soon</p>
+    </div>
+
+    <!-- RIGHT — card -->
+    <div class="card-scene" id="card-scene">
+      <!-- Riyadh street map — organic, atmospheric -->
+      <div class="map-bg">
+        <svg viewBox="0 0 560 700" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <radialGradient id="vgn" cx="50%" cy="50%" r="55%">
+              <stop offset="0%" stop-color="#181614" stop-opacity="0"/>
+              <stop offset="60%" stop-color="#181614" stop-opacity=".45"/>
+              <stop offset="100%" stop-color="#181614" stop-opacity=".9"/>
+            </radialGradient>
+          </defs>
+          <!-- Major arterials — gently curving -->
+          <path d="M 30 0 C 60 100 120 200 170 310 S 250 480 300 700" stroke="rgba(255,255,255,.14)" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M 280 0 C 275 130 300 250 290 380 S 270 550 285 700" stroke="rgba(255,255,255,.12)" stroke-width="1.9" stroke-linecap="round"/>
+          <path d="M 480 0 C 475 110 500 240 488 370 S 465 540 478 700" stroke="rgba(255,255,255,.1)" stroke-width="1.6" stroke-linecap="round"/>
+          <!-- Ring road arcs -->
+          <path d="M 0 160 Q 140 110 280 135 T 560 155" stroke="rgba(255,255,255,.11)" stroke-width="1.7" stroke-linecap="round"/>
+          <path d="M 0 350 Q 120 325 260 345 T 520 338 Q 542 336 560 348" stroke="rgba(255,255,255,.1)" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M 0 530 Q 150 505 300 525 T 560 518" stroke="rgba(255,255,255,.09)" stroke-width="1.4" stroke-linecap="round"/>
+          <!-- Secondary streets -->
+          <path d="M 115 0 C 112 160 120 310 115 460 S 110 590 117 700" stroke="rgba(255,255,255,.07)" stroke-width="1.1" stroke-linecap="round"/>
+          <path d="M 200 0 C 197 140 205 290 200 440 S 196 580 202 700" stroke="rgba(255,255,255,.065)" stroke-width="1" stroke-linecap="round"/>
+          <path d="M 380 0 C 376 150 385 300 378 450 S 374 590 381 700" stroke="rgba(255,255,255,.07)" stroke-width="1.1" stroke-linecap="round"/>
+          <!-- Gentle cross streets -->
+          <path d="M 0 80 Q 100 72 200 80 T 400 74 Q 480 70 560 80" stroke="rgba(255,255,255,.055)" stroke-width="1" stroke-linecap="round"/>
+          <path d="M 0 240 Q 130 230 260 242 T 520 234 Q 542 232 560 240" stroke="rgba(255,255,255,.065)" stroke-width="1" stroke-linecap="round"/>
+          <path d="M 0 430 Q 140 420 280 432 T 540 424 Q 552 422 560 430" stroke="rgba(255,255,255,.055)" stroke-width="1" stroke-linecap="round"/>
+          <path d="M 0 620 Q 160 612 320 622 T 560 616" stroke="rgba(255,255,255,.05)" stroke-width="1" stroke-linecap="round"/>
+          <!-- Local streets (faintest) -->
+          <path d="M 55 0 C 70 200 50 400 65 700" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+          <path d="M 155 100 C 160 250 148 400 158 580" stroke="rgba(255,255,255,.035)" stroke-width="1"/>
+          <path d="M 340 0 C 345 200 332 380 342 600" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+          <path d="M 435 80 C 440 240 428 400 438 580" stroke="rgba(255,255,255,.035)" stroke-width="1"/>
+          <path d="M 0 195 Q 200 185 380 196 T 560 190" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+          <path d="M 0 290 Q 180 282 360 291 T 560 286" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+          <path d="M 0 475 Q 200 467 400 476 T 560 470" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+          <!-- 4 glowing dots matching callout positions -->
+          <!-- txn-1 top:13% left:8% -->
+          <circle cx="45" cy="91" r="18" fill="#D4B96A" opacity=".12"/>
+          <circle cx="45" cy="91" r="3.5" fill="#D4B96A"/>
+          <circle cx="45" cy="91" r="3.5" fill="none" stroke="#D4B96A" stroke-width="1.2">
+            <animate attributeName="r" values="3.5;15;3.5" dur="3s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values=".9;0;.9" dur="3s" repeatCount="indefinite"/>
+          </circle>
+          <!-- txn-2 top:9% right:10% -->
+          <circle cx="504" cy="63" r="18" fill="#D4B96A" opacity=".12"/>
+          <circle cx="504" cy="63" r="3.5" fill="#D4B96A"/>
+          <circle cx="504" cy="63" r="3.5" fill="none" stroke="#D4B96A" stroke-width="1.2">
+            <animate attributeName="r" values="3.5;15;3.5" dur="3s" begin=".8s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values=".9;0;.9" dur="3s" begin=".8s" repeatCount="indefinite"/>
+          </circle>
+          <!-- txn-3 bottom:28% right:7% → top~72% -->
+          <circle cx="521" cy="504" r="18" fill="#D4B96A" opacity=".12"/>
+          <circle cx="521" cy="504" r="3.5" fill="#D4B96A"/>
+          <circle cx="521" cy="504" r="3.5" fill="none" stroke="#D4B96A" stroke-width="1.2">
+            <animate attributeName="r" values="3.5;15;3.5" dur="3s" begin="1.4s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values=".9;0;.9" dur="3s" begin="1.4s" repeatCount="indefinite"/>
+          </circle>
+          <!-- txn-4 bottom:14% left:7% → top~86% -->
+          <circle cx="39" cy="602" r="18" fill="#D4B96A" opacity=".12"/>
+          <circle cx="39" cy="602" r="3.5" fill="#D4B96A"/>
+          <circle cx="39" cy="602" r="3.5" fill="none" stroke="#D4B96A" stroke-width="1.2">
+            <animate attributeName="r" values="3.5;15;3.5" dur="3s" begin="2s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values=".9;0;.9" dur="3s" begin="2s" repeatCount="indefinite"/>
+          </circle>
+          <!-- Vignette -->
+          <rect width="560" height="700" fill="url(#vgn)"/>
+        </svg>
+      </div>
+      <!-- Transaction callouts -->
+      <div class="txn-callout txn-1">
+        <div class="txn-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+        <div class="txn-text"><span class="txn-title">Rent verified</span><span class="txn-sub">+4,000 pts</span></div>
+      </div>
+      <div class="txn-callout txn-2">
+        <div class="txn-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></div>
+        <div class="txn-text"><span class="txn-title">Dinner at Takaya</span><span class="txn-sub">+150 pts</span></div>
+      </div>
+      <div class="txn-callout txn-3">
+        <div class="txn-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 16H9m10 0h3v-3.15a1 1 0 00-.84-.99L16 11l-2.7-3.6a1 1 0 00-.8-.4H5.24a2 2 0 00-1.8 1.1l-.8 1.63A6 6 0 002 12.42V16h2"/><circle cx="6.5" cy="16.5" r="2.5"/><circle cx="16.5" cy="16.5" r="2.5"/></svg></div>
+        <div class="txn-text"><span class="txn-title">Rideshare</span><span class="txn-sub">400 pts redeemed</span></div>
+      </div>
+      <div class="txn-callout txn-4">
+        <div class="txn-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></div>
+        <div class="txn-text"><span class="txn-title">Coffee at Brūq</span><span class="txn-sub">+22 pts</span></div>
+      </div>
+      <!-- CARD -->
+      <div class="card-wrap" id="card-wrap">
+        <div class="card-tilt" id="card-tilt">
+          <div class="card-body">
+            <div class="card-noise"></div>
+            <div class="card-specular" id="card-specular"></div>
+            <div class="card-shimmer"></div>
+            <div style="position:relative;z-index:3;display:flex;justify-content:space-between;align-items:flex-start">
+              <span class="card-brand">Onyx</span>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" opacity=".35">
+                <path d="M6 4.5C3.74 6.26 2.24 8.97 2.24 12s1.5 5.74 3.76 7.5" stroke="#D4B96A" stroke-width="1.6" stroke-linecap="round"/>
+                <path d="M9.5 7.5C8.2 8.7 7.5 10.26 7.5 12s.7 3.3 2 4.5" stroke="#D4B96A" stroke-width="1.6" stroke-linecap="round"/>
+                <path d="M13 10c-.9.7-1.5 1.8-1.5 3s.6 2.3 1.5 3" stroke="#D4B96A" stroke-width="1.6" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="card-chip"></div>
+            <div class="card-meta">
+              <p class="card-num">····  ····  ····  4821</p>
+              <div class="card-row">
+                <div>
+                  <p class="card-label">Cardholder</p>
+                  <p class="card-val">OMAR OSMAN</p>
+                </div>
+                <div style="text-align:right">
+                  <p class="card-label">Member Since</p>
+                  <p class="card-val">26</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ================ MANIFESTO ================ -->
+<section id="manifesto">
+  <div class="mani-inner">
+    <div class="mani-label sr">Manifesto · №001</div>
+    <p class="mani-text sr">Your biggest monthly expense has <i>never</i> earned you a single <u>reward point</u>.<br>Onyx changes that.</p>
+    <div class="mani-sig sr">Signed · Onyx Riyadh · 2026</div>
+  </div>
+</section>
+
+<!-- ═════════════ HOW ═════════════ -->
+<section id="how">
+  <div class="how-head">
+    <div class="sr">
+      <div class="how-label">Operation</div>
+      <h2>How it <i>works.</i></h2>
+    </div>
+  </div>
+
+  <div class="how-steps">
+    <div class="step sr"><span class="step-num">01</span><h3>Pay your <i>rent.</i></h3>
+      <p>Link your Ejar contract and pay rent through bank transfer as you normally do. Onyx verifies the payment automatically.</p>
+    </div>
+    <div class="step sr" style="transition-delay:.1s"><span class="step-num">02</span><h3>Use your <i>card.</i></h3>
+      <p>Spend with your Onyx card on groceries, dining, coffee, fuel, and everything else. Earn points on every transaction.</p>
+    </div>
+    <div class="step sr" style="transition-delay:.2s"><span class="step-num">03</span><h3>Earn <i>rewards.</i></h3>
+      <p>Collect points on your rent and daily spending. Redeem at partner merchants or save them for bigger rewards.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════ PARTNERS ═════════════ -->
+<section id="partners">
+  <div class="part-head">
+    <div class="sr">
+      <div class="how-label" style="color:var(--warm)">Network</div>
+      <h2>Earn bonus points<br><i>across Riyadh.</i></h2>
+    </div>
+    <div class="sr">
+      <p>Every purchase at a partner earns bonus points automatically. Open the Onyx app to find partners near you.</p>
+    </div>
+  </div>
+
+  <div class="marquee-col">
+    <div class="marquee-track marquee-a">
+      <span class="part-pill">Dining <i>&</i> Coffee</span>
+      <span class="part-pill">Fitness <i>&</i> Gyms</span>
+      <span class="part-pill">Home <i>&</i> Living</span>
+      <span class="part-pill">Electronics</span>
+      <span class="part-pill">Pharmacy</span>
+      <span class="part-pill">Dining <i>&</i> Coffee</span>
+      <span class="part-pill">Fitness <i>&</i> Gyms</span>
+      <span class="part-pill">Home <i>&</i> Living</span>
+      <span class="part-pill">Electronics</span>
+      <span class="part-pill">Pharmacy</span>
+    </div>
+  </div>
+  <div class="marquee-col">
+    <div class="marquee-track marquee-b">
+      <span class="part-pill">Grocery Stores</span>
+      <span class="part-pill">Services <i>&</i> Repairs</span>
+      <span class="part-pill">Travel <i>&</i> Hotels</span>
+      <span class="part-pill">Fuel Stations</span>
+      <span class="part-pill">Car Wash</span>
+      <span class="part-pill">Grocery Stores</span>
+      <span class="part-pill">Services <i>&</i> Repairs</span>
+      <span class="part-pill">Travel <i>&</i> Hotels</span>
+      <span class="part-pill">Fuel Stations</span>
+      <span class="part-pill">Car Wash</span>
+    </div>
+  </div>
+
+
+</section>
+
+<!-- ═════════════ WHY ═════════════ -->
+<section id="why">
+  <div style="max-width:1400px;margin:0 auto">
+    <div class="sr"><div class="how-label" style="color:var(--gold)">Why Onyx</div></div>
+    <h2 class="sr" style="font-family:var(--serif);font-size:clamp(2.8rem,5.5vw,5rem);font-weight:400;line-height:.95;letter-spacing:-.035em">Built different. <i style="font-style:italic;color:var(--gold)">On purpose.</i></h2>
+    <div class="why-grid-simple">
+      <div class="wf-item sr">
+        <p class="wf-num">01</p>
+        <h3 style="font-size:18px;font-weight:700;color:var(--cream);margin-bottom:10px">Rent finally earns</h3>
+        <p style="color:var(--warm-l);font-size:14px;line-height:1.7">Your biggest monthly expense has never generated a single reward point. Onyx changes that.</p>
+      </div>
+      <div class="wf-item sr" style="transition-delay:.06s">
+        <p class="wf-num">02</p>
+        <h3 style="font-size:18px;font-weight:700;color:var(--cream);margin-bottom:10px">No switching required</h3>
+        <p style="color:var(--warm-l);font-size:14px;line-height:1.7">Keep your existing bank and cards. Onyx is added alongside them, not instead of them.</p>
+      </div>
+      <div class="wf-item sr" style="transition-delay:.12s">
+        <p class="wf-num">03</p>
+        <h3 style="font-size:18px;font-weight:700;color:var(--cream);margin-bottom:10px">Apple Pay from day one</h3>
+        <p style="color:var(--warm-l);font-size:14px;line-height:1.7">Add Onyx to Apple Wallet the moment you're approved. Earn before the physical card arrives.</p>
+      </div>
+      <div class="wf-item sr" style="transition-delay:.08s">
+        <p class="wf-num">04</p>
+        <h3 style="font-size:18px;font-weight:700;color:var(--cream);margin-bottom:10px">Local partner map</h3>
+        <p style="color:var(--warm-l);font-size:14px;line-height:1.7">Open the app, see partners near you, earn bonus points when you pay with Onyx.</p>
+      </div>
+      <div class="wf-item sr" style="transition-delay:.14s">
+        <p class="wf-num">05</p>
+        <h3 style="font-size:18px;font-weight:700;color:var(--cream);margin-bottom:10px">Points on everything</h3>
+        <p style="color:var(--warm-l);font-size:14px;line-height:1.7">Earn on rent, groceries, dining, fuel, delivery. Every transaction counts.</p>
+      </div>
+      <div class="wf-item sr" style="transition-delay:.2s">
+        <p class="wf-num">06</p>
+        <h3 style="font-size:18px;font-weight:700;color:var(--cream);margin-bottom:10px">Free to start</h3>
+        <p style="color:var(--warm-l);font-size:14px;line-height:1.7">The card costs nothing. Start earning from your first transaction.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════ FAQ ═════════════ -->
+<section id="faq">
+  <div class="faq-inner">
+    <div class="faq-head sr">
+      <span class="mlabel">·&nbsp;&nbsp;Frequently Asked&nbsp;&nbsp;·</span>
+      <h2>Common <i>questions.</i></h2>
+    </div>
+
+    <details class="sr">
+      <summary>
+        <span class="faq-num">Q / 01</span>
+        <span class="faq-q">Do I need to change how I pay rent?</span>
+        <span class="faq-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg></span>
+      </summary>
+      <p>No. Keep paying however you do now. Onyx verifies through Ejar and credits points separately. Nothing changes on your landlord's end.</p>
+    </details>
+    <details class="sr">
+      <summary>
+        <span class="faq-num">Q / 02</span>
+        <span class="faq-q">Is the card free?</span>
+        <span class="faq-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg></span>
+      </summary>
+      <p>Yes. Free to get, free to use. Start earning from your first transaction.</p>
+    </details>
+    <details class="sr">
+      <summary>
+        <span class="faq-num">Q / 03</span>
+        <span class="faq-q">How do I earn on rent if I don't pay with a card?</span>
+        <span class="faq-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg></span>
+      </summary>
+      <p>You don't pay rent through the card. You pay rent via bank transfer as usual. Onyx verifies the payment through Ejar contract data and credits points to your card account separately.</p>
+    </details>
+    <details class="sr">
+      <summary>
+        <span class="faq-num">Q / 04</span>
+        <span class="faq-q">When does Onyx launch?</span>
+        <span class="faq-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg></span>
+      </summary>
+      <p>Riyadh first. Join the waitlist for priority access.</p>
+    </details>
+  </div>
+</section>
+
+<!-- ═════════════ FORM (CTA + SIGN UP) ═════════════ -->
+<section id="form-section">
+  <div class="form-wrap">
+    <div class="form-l sr">
+      <div class="how-label" style="color:var(--gold)">Apply · N° 001</div>
+      <h2>Claim your <i>place</i> on the list.</h2>
+      <p class="lede">Early members get priority access when Onyx launches in Riyadh. No fees. No commitments. Just first in line.</p>
+
+    </div>
+
+    <div class="form-r sr">
+      <div class="form-card">
+        <form id="wf" onsubmit="return hs(event)">
+          <div class="form-row">
+            <label class="field-label" for="fn">First Name <span>★</span></label>
+            <input type="text" id="fn" class="field" placeholder="Omar" required>
+          </div>
+          <div class="form-row">
+            <label class="field-label" for="em">Email <span>★</span></label>
+            <input type="email" id="em" class="field" placeholder="you@example.com" required>
+          </div>
+          <div class="form-row">
+            <label class="field-label" for="nb">Neighborhood in Riyadh <span>★</span></label>
+            <select id="nb" class="field" required>
+              <option value="" disabled selected>Select neighborhood</option>
+              <option>Al Olaya</option><option>Al Nakheel</option><option>Al Malqa</option>
+              <option>Hittin</option><option>Al Yasmin</option><option>Al Narjis</option>
+              <option>Al Wurud</option><option>Al Muhammadiyah</option><option>Al Sulimaniyah</option>
+              <option>Al Rahmaniyah</option><option>Al Wadi</option><option>Al Rabia</option>
+              <option>Diplomatic Quarter</option><option>KAFD area</option><option>Qurtubah</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <button type="submit" id="sb" class="btn-submit">
+            <span>Reserve my spot</span>
+            <span class="arrow">→</span>
+          </button>
+        </form>
+        <div id="sm" class="form-msg" style="display:none">
+          <p style="font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--gold-d);margin-bottom:6px">✓ CONFIRMED</p>
+          <p style="font-family:var(--serif);font-size:22px;letter-spacing:-.01em">You're on the list.</p>
+          <p style="color:var(--warm);font-size:13px;margin-top:6px">We'll reach out when Onyx is ready for you.</p>
+        </div>
+        <div id="dm" class="form-msg dup" style="display:none">
+          <p style="font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:#B8860B;margin-bottom:6px">⚠ DUPLICATE</p>
+          <p style="font-family:var(--serif);font-size:22px;letter-spacing:-.01em">Already registered.</p>
+          <p style="color:var(--warm);font-size:13px;margin-top:6px">This email is on the waitlist.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════ FINAL CTA ═════════════ -->
+<section id="cta">
+  <div class="cta-inner">
+    <div class="cta-kicker sr">Final word</div>
+    <h2 class="sr">Your rent should work <i>for you.</i></h2>
+    <p class="sr">Be the first to know when Onyx launches in Riyadh.</p>
+    <a href="#form-section" class="cta-btn sr"><span class="dot"></span>Join the Waitlist</a>
+  </div>
+</section>
+
+<!-- ═════════════ FOOTER ═════════════ -->
+<footer>
+  <div class="foot-big">ONYX</div>
+  <div class="foot-row">
+    <span>© 2026 ONYX · RIYADH</span>
+    <span>REWARDS ON RENT · VOL. 001</span>
+    <span>MADE IN KSA</span>
+  </div>
+</footer>
+
+<!-- Toast -->
+<div id="toast">
+  <div style="background:var(--ink);color:var(--cream);border:1px solid var(--red);border-radius:6px;padding:14px 22px;font-family:var(--mono);font-size:12px;letter-spacing:.1em;display:flex;align-items:center;gap:14px;box-shadow:4px 4px 0 var(--red)">
+    <span style="color:var(--red)">⚠</span>
+    <span>Something went wrong. Try again.</span>
+    <button onclick="ht()" style="color:var(--cream);background:none;border:none;cursor:pointer;font-size:16px">×</button>
   </div>
 </div>
 
-<!-- ═══ HERO ═══ -->
-<section id="top" style="min-height:100vh">
-  <div class="hero-grid" style="display:grid;grid-template-columns:1fr 1fr;min-height:100vh">
-
-    <!-- LEFT: dark -->
-    <div class="hero-left" style="background:var(--card-dk);color:var(--cream);padding:48px 56px 60px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden">
-      <!-- Decorative floating elements on dark side -->
-      <div class="float-orb" style="width:6px;height:6px;background:var(--gold);top:20%;right:15%;animation:orbitSlow 12s ease-in-out infinite"></div>
-      <div class="float-orb" style="width:4px;height:4px;background:var(--gold);top:60%;right:25%;animation:orbitSlow 16s ease-in-out infinite 3s;opacity:.3"></div>
-      <div style="position:absolute;bottom:-20%;right:-20%;width:500px;height:500px;background:radial-gradient(circle,rgba(180,150,66,.07),transparent 60%);pointer-events:none"></div>
-
-      <!-- Logo -->
-      <div class="rise d1" style="display:flex;align-items:baseline;gap:10px">
-        <p style="font-family:var(--serif);color:var(--gold);font-size:44px;font-weight:600;letter-spacing:.12em;line-height:1">ONYX</p>
-        <p style="color:var(--warm-l);font-size:14px;letter-spacing:.2em;font-weight:400">CARD</p>
-      </div>
-
-      <div style="max-width:480px">
-        <p class="rise d2" style="color:var(--gold);font-size:12px;font-weight:700;letter-spacing:.35em;text-transform:uppercase;margin-bottom:28px">Coming to Riyadh</p>
-        <h1 class="rise d3" style="font-size:clamp(2.2rem,4.5vw,3.6rem);line-height:1.06;letter-spacing:-.03em;font-weight:800;margin-bottom:28px">The first card that rewards <span style="font-family:var(--serif);font-style:italic;color:var(--gold);font-weight:600">your rent.</span></h1>
-        <p class="rise d4" style="color:var(--warm-l);font-size:17px;line-height:1.7;margin-bottom:44px;font-weight:300;max-width:420px">Earn points on your rent and everyday spending at partner merchants across the city.</p>
-
-        <form id="wf" onsubmit="return hs(event)" class="rise d5" style="max-width:400px;display:flex;flex-direction:column;gap:10px">
-          <input type="text" id="fn" placeholder="First name" required class="field">
-          <input type="email" id="em" placeholder="Email address" required class="field">
-          <select id="nb" required class="field"><option value="" disabled selected>Neighborhood in Riyadh</option><option>Al Olaya</option><option>Al Nakheel</option><option>Al Malqa</option><option>Hittin</option><option>Al Yasmin</option><option>Al Narjis</option><option>Al Wurud</option><option>Al Muhammadiyah</option><option>Al Sulimaniyah</option><option>Al Rahmaniyah</option><option>Al Wadi</option><option>Al Rabia</option><option>Diplomatic Quarter</option><option>KAFD area</option><option>Qurtubah</option><option>Other</option></select>
-          <button type="submit" id="sb" class="btn-gold" style="margin-top:4px">Join the Waitlist</button>
-          <p style="text-align:center;font-size:12px;color:rgba(255,255,255,.25);margin-top:4px">Early members get priority access</p>
-        </form>
-        <div id="sm" style="display:none;max-width:400px;margin-top:36px;background:rgba(180,150,66,.08);border:1px solid rgba(180,150,66,.15);border-radius:16px;padding:24px"><p style="color:var(--gold);font-weight:600;font-size:16px">You're on the list.</p><p style="color:var(--warm-l);font-size:14px;margin-top:6px">We'll reach out when Onyx is ready for you.</p></div>
-        <div id="dm" style="display:none;max-width:400px;margin-top:36px;background:rgba(234,179,8,.06);border:1px solid rgba(234,179,8,.12);border-radius:16px;padding:24px"><p style="color:#EAB308;font-weight:600;font-size:16px">Already registered.</p><p style="color:var(--warm-l);font-size:14px;margin-top:6px">This email is on the waitlist.</p></div>
-      </div>
-
-      <div></div>
-    </div>
-
-    <!-- MOBILE CARD (visible only on small screens) -->
-    <div class="hero-card-mobile" style="background:var(--card-dk);padding-bottom:48px">
-      <div class="card-visual" style="width:300px;height:190px;border-radius:16px;padding:22px 24px;display:flex;flex-direction:column;justify-content:space-between;background:linear-gradient(155deg,#2A2928 0%,#1A1918 40%,#222120 70%,#1E1D1B 100%);border:1px solid rgba(180,150,66,.15);box-shadow:0 30px 60px -15px rgba(0,0,0,.4);position:relative;overflow:hidden">
-        <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(180,150,66,.06),transparent 40%,transparent 60%,rgba(180,150,66,.03));pointer-events:none"></div>
-        <!-- Top: ONYX logo + chip -->
-        <div style="position:relative">
-          <span style="font-family:var(--serif);color:var(--gold);font-size:17px;font-weight:600;letter-spacing:.12em;opacity:.8;display:block;margin-bottom:10px">ONYX</span>
-          <div style="width:36px;height:26px;border-radius:5px;background:linear-gradient(145deg,#C9AB56,#957D35);position:relative;overflow:hidden">
-            <div style="position:absolute;inset:2px;border:1px solid rgba(255,255,255,.15);border-radius:3px"></div>
-            <div style="position:absolute;top:50%;left:0;right:0;height:1px;background:rgba(255,255,255,.1)"></div>
-          </div>
-        </div>
-        <!-- Bottom: card details -->
-        <div style="position:relative">
-          <p style="color:rgba(255,255,255,.2);font-size:11px;letter-spacing:.35em;margin-bottom:10px;font-weight:300">····  ····  ····  4821</p>
-          <div style="display:flex;justify-content:space-between;align-items:flex-end">
-            <div>
-              <p style="color:rgba(255,255,255,.15);font-size:7px;text-transform:uppercase;letter-spacing:.2em;margin-bottom:3px">Cardholder</p>
-              <p style="color:rgba(255,255,255,.65);font-size:13px;font-weight:500;letter-spacing:.06em">OMAR OSMAN</p>
-            </div>
-            <div style="text-align:right">
-              <p style="color:rgba(255,255,255,.15);font-size:7px;text-transform:uppercase;letter-spacing:.2em;margin-bottom:3px">Expires</p>
-              <p style="color:rgba(255,255,255,.4);font-size:12px;letter-spacing:.06em">09/28</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- RIGHT: light with card + notifications -->
-    <div class="hero-right" style="background:var(--cream2);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:40px">
-      <!-- Riyadh skyline background image -->
-      <img src="riyadh-skyline.png" alt="" style="position:absolute;bottom:0;left:0;width:100%;pointer-events:none;opacity:.35">
-
-      <!-- Geometric Islamic-inspired pattern (very subtle) -->
-      <svg style="position:absolute;top:5%;right:5%;width:200px;height:200px;opacity:.035;pointer-events:none;animation:driftX 25s ease-in-out infinite" viewBox="0 0 100 100" fill="none" stroke="var(--gold)" stroke-width=".5">
-        <polygon points="50,5 95,27.5 95,72.5 50,95 5,72.5 5,27.5"/>
-        <polygon points="50,15 85,32.5 85,67.5 50,85 15,67.5 15,32.5"/>
-        <polygon points="50,25 75,37.5 75,62.5 50,75 25,62.5 25,37.5"/>
-        <line x1="50" y1="5" x2="50" y2="95"/><line x1="5" y1="50" x2="95" y2="50"/>
-        <line x1="5" y1="27.5" x2="95" y2="72.5"/><line x1="95" y1="27.5" x2="5" y2="72.5"/>
-      </svg>
-      <svg style="position:absolute;bottom:10%;left:8%;width:140px;height:140px;opacity:.03;pointer-events:none;animation:driftY 20s ease-in-out infinite" viewBox="0 0 100 100" fill="none" stroke="var(--gold)" stroke-width=".5">
-        <polygon points="50,5 95,27.5 95,72.5 50,95 5,72.5 5,27.5"/>
-        <polygon points="50,20 80,35 80,65 50,80 20,65 20,35"/>
-        <circle cx="50" cy="50" r="20"/>
-      </svg>
-
-      <!-- Ambient glow -->
-      <div style="position:absolute;top:8%;right:8%;width:400px;height:400px;background:radial-gradient(circle,rgba(180,150,66,.06),transparent 60%);pointer-events:none;animation:driftX 20s ease-in-out infinite"></div>
-      <div style="position:absolute;bottom:15%;left:10%;width:250px;height:250px;background:radial-gradient(circle,rgba(180,150,66,.04),transparent 60%);pointer-events:none;animation:driftY 15s ease-in-out infinite"></div>
-
-      <!-- Small floating decorative shapes -->
-      <div class="float-diamond" style="width:12px;height:12px;background:var(--gold);top:15%;left:20%;animation:orbitSlow 18s ease-in-out infinite"></div>
-      <div class="float-orb" style="width:8px;height:8px;background:var(--gold);bottom:25%;right:15%;animation:orbitSlow 14s ease-in-out infinite 2s;opacity:.25"></div>
-      <div class="float-diamond" style="width:8px;height:8px;border:1.5px solid var(--gold);background:transparent;top:70%;left:12%;animation:orbitSlow 22s ease-in-out infinite 5s;opacity:.2"></div>
-      <div class="float-orb" style="width:5px;height:5px;background:var(--gold);top:30%;right:25%;animation:orbitSlow 16s ease-in-out infinite 1s;opacity:.2"></div>
-
-      <!-- Card + Notifications -->
-      <div style="position:relative" id="card-scene">
-        <!-- Credit Card -->
-        <div class="rise d3" style="animation:rise .85s cubic-bezier(.22,1,.36,1) .28s both">
-        <div class="card-visual" style="width:360px;height:226px;border-radius:18px;padding:28px 30px;display:flex;flex-direction:column;justify-content:space-between;background:linear-gradient(155deg,#2A2928 0%,#1A1918 40%,#222120 70%,#1E1D1B 100%);border:1px solid rgba(180,150,66,.15);box-shadow:0 40px 80px -20px rgba(0,0,0,.35),0 0 0 1px rgba(180,150,66,.05),inset 0 1px 0 rgba(255,255,255,.03);animation:cardFloat 7s ease-in-out infinite;position:relative;overflow:hidden">
-          <!-- Card inner grain texture -->
-          <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(180,150,66,.06),transparent 40%,transparent 60%,rgba(180,150,66,.03));pointer-events:none"></div>
-          <!-- Top: ONYX logo + chip -->
-          <div style="position:relative">
-            <span style="font-family:var(--serif);color:var(--gold);font-size:20px;font-weight:600;letter-spacing:.12em;opacity:.8;display:block;margin-bottom:14px">ONYX</span>
-            <div style="width:42px;height:30px;border-radius:6px;background:linear-gradient(145deg,#C9AB56,#957D35);position:relative;overflow:hidden">
-              <div style="position:absolute;inset:2px;border:1px solid rgba(255,255,255,.15);border-radius:4px"></div>
-              <div style="position:absolute;top:50%;left:0;right:0;height:1px;background:rgba(255,255,255,.1)"></div>
-            </div>
-          </div>
-          <!-- Bottom: card number, cardholder, expiry -->
-          <div style="position:relative">
-            <p style="color:rgba(255,255,255,.2);font-size:12px;letter-spacing:.4em;margin-bottom:14px;font-weight:300">····  ····  ····  4821</p>
-            <div style="display:flex;justify-content:space-between;align-items:flex-end">
-              <div>
-                <p style="color:rgba(255,255,255,.15);font-size:8px;text-transform:uppercase;letter-spacing:.2em;margin-bottom:4px">Cardholder</p>
-                <p style="color:rgba(255,255,255,.65);font-size:14px;font-weight:500;letter-spacing:.08em">OMAR OSMAN</p>
-              </div>
-              <div style="text-align:right">
-                <p style="color:rgba(255,255,255,.15);font-size:8px;text-transform:uppercase;letter-spacing:.2em;margin-bottom:4px">Expires</p>
-                <p style="color:rgba(255,255,255,.4);font-size:13px;letter-spacing:.06em">09/28</p>
-              </div>
-              <!-- Bottom-right reserved for Visa/Mastercard logo -->
-            </div>
-          </div>
-        </div>
-        </div><!-- end rise wrapper for card -->
-
-        <!-- Notification: Rent verified -->
-        <div style="position:absolute;top:-35px;right:-80px;animation:rise .85s cubic-bezier(.22,1,.36,1) .42s both">
-        <div style="background:white;border-radius:16px;padding:16px 20px;box-shadow:0 12px 40px rgba(0,0,0,.08),0 0 0 1px rgba(0,0,0,.04);display:flex;align-items:center;gap:12px;animation:notifFloat1 5s ease-in-out infinite;cursor:default">
-          <div style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#DCFCE7,#BBF7D0);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
-          </div>
-          <div><p style="font-size:14px;font-weight:700;color:var(--ink)">Rent verified</p><p style="font-size:12px;color:var(--warm);margin-top:2px">+4,000 points earned</p></div>
-        </div>
-        </div><!-- end rise wrapper for rent notif -->
-
-        <!-- Notification: Partner purchase -->
-        <div style="position:absolute;bottom:60px;left:-100px;animation:rise .85s cubic-bezier(.22,1,.36,1) .55s both">
-        <div style="background:white;border-radius:16px;padding:16px 20px;box-shadow:0 12px 40px rgba(0,0,0,.08),0 0 0 1px rgba(0,0,0,.04);display:flex;align-items:center;gap:12px;animation:notifFloat2 6s ease-in-out infinite 1s;cursor:default">
-          <div style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,rgba(180,150,66,.12),rgba(180,150,66,.06));display:flex;align-items:center;justify-content:center;flex-shrink:0">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/></svg>
-          </div>
-          <div><p style="font-size:14px;font-weight:700;color:var(--ink)">Dinner at Takya</p><p style="font-size:12px;color:var(--warm);margin-top:2px">3x bonus · +180 pts</p></div>
-        </div>
-        </div><!-- end rise wrapper for partner notif -->
-
-        <!-- Notification: Points total -->
-        <div style="position:absolute;bottom:-40px;right:-50px;animation:rise .85s cubic-bezier(.22,1,.36,1) .7s both">
-        <div style="background:white;border-radius:16px;padding:16px 20px;box-shadow:0 12px 40px rgba(0,0,0,.08),0 0 0 1px rgba(0,0,0,.04);display:flex;align-items:center;gap:14px;animation:notifFloat3 7s ease-in-out infinite 2s;cursor:default">
-          <div style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,rgba(180,150,66,.1),rgba(180,150,66,.04));display:flex;align-items:center;justify-content:center;flex-shrink:0">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          </div>
-          <div><p style="font-size:12px;color:var(--warm)">This month</p><p style="font-size:22px;font-weight:800;color:var(--gold);letter-spacing:-.02em">1,025 pts</p></div>
-        </div>
-        </div><!-- end rise wrapper for points notif -->
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ HOW IT WORKS ═══ -->
-<section class="sec" style="background:var(--cream)">
-  <div style="max-width:1200px;margin:0 auto">
-    <h2 class="sr" style="font-size:clamp(1.8rem,3vw,2.6rem);font-weight:800;letter-spacing:-.02em;margin-bottom:14px">How Onyx <span style="font-family:var(--serif);font-style:italic;color:var(--gold);font-weight:600">works.</span></h2>
-    <p class="sr" style="color:var(--warm);font-size:16px;margin-bottom:64px;max-width:480px">Earning rewards on rent has never been easier</p>
-    <div style="position:relative">
-      <div class="g3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;position:relative;z-index:1">
-        <div class="step sr">
-          <div style="width:48px;height:48px;border-radius:12px;background:rgba(180,150,66,.08);display:flex;align-items:center;justify-content:center;margin-bottom:20px">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#B49642" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-          </div>
-          <h3 style="font-size:19px;font-weight:700;margin-bottom:10px">Pay your rent</h3>
-          <p style="color:var(--warm);font-size:15px;line-height:1.65">Link your Ejar contract and pay rent through bank transfer as you normally do. Onyx verifies the payment automatically.</p>
-        </div>
-        <div class="step sr">
-          <div style="width:48px;height:48px;border-radius:12px;background:rgba(180,150,66,.08);display:flex;align-items:center;justify-content:center;margin-bottom:20px">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#B49642" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-          </div>
-          <h3 style="font-size:19px;font-weight:700;margin-bottom:10px">Use your card</h3>
-          <p style="color:var(--warm);font-size:15px;line-height:1.65">Spend with your Onyx card on groceries, dining, coffee, fuel, and everything else. Earn points on every transaction.</p>
-        </div>
-        <div class="step sr">
-          <div style="width:48px;height:48px;border-radius:12px;background:rgba(180,150,66,.08);display:flex;align-items:center;justify-content:center;margin-bottom:20px">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#B49642" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          </div>
-          <h3 style="font-size:19px;font-weight:700;margin-bottom:10px">Earn rewards</h3>
-          <p style="color:var(--warm);font-size:15px;line-height:1.65">Collect points on your rent and daily spending. Redeem at partner merchants or save them for bigger rewards.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ PARTNERS ═══ -->
-<section class="sec" style="background:var(--cream2);position:relative;overflow:hidden">
-  <!-- Floating decorative elements -->
-  <div class="float-diamond" style="width:16px;height:16px;background:var(--gold);top:10%;right:8%;animation:orbitSlow 20s ease-in-out infinite"></div>
-  <div class="float-orb" style="width:6px;height:6px;background:var(--gold);bottom:20%;left:5%;animation:orbitSlow 15s ease-in-out infinite 4s;opacity:.3"></div>
-  <div style="max-width:1200px;margin:0 auto;position:relative;z-index:1">
-    <p class="sr" style="color:var(--gold);font-size:12px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;margin-bottom:16px">Partner network</p>
-    <h2 class="sr" style="font-size:clamp(1.8rem,3vw,2.6rem);font-weight:800;letter-spacing:-.02em;margin-bottom:16px">Earn bonus points <span style="font-family:var(--serif);font-style:italic;color:var(--gold);font-weight:600">across Riyadh.</span></h2>
-    <p class="sr" style="color:var(--warm);font-size:16px;line-height:1.7;margin-bottom:40px;max-width:520px">Use the Onyx app to find partnered restaurants, gyms, pharmacies, and more near you. Every purchase at a partner earns bonus points automatically.</p>
-    <div class="sr" style="display:flex;flex-wrap:wrap;gap:10px">
-      <span class="pill"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3h18v18H3z"/><circle cx="12" cy="12" r="1"/></svg> Dining</span>
-      <span class="pill"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M18 8a6 6 0 01-12 0M6 21v-3a2 2 0 012-2h8a2 2 0 012 2v3"/></svg> Fitness</span>
-      <span class="pill"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Home</span>
-      <span class="pill"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.8"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg> Electronics</span>
-      <span class="pill"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.8"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg> Pharmacy</span>
-      <span class="pill"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.8"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg> Services</span>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ WHY ONYX ═══ -->
-<section class="sec" style="background:var(--cream);position:relative;overflow:hidden">
-  <div class="float-orb" style="width:10px;height:10px;background:var(--gold);top:15%;left:6%;animation:orbitSlow 18s ease-in-out infinite 2s;opacity:.15"></div>
-  <div class="float-diamond" style="width:10px;height:10px;border:1.5px solid var(--gold);background:transparent;bottom:10%;right:8%;animation:orbitSlow 24s ease-in-out infinite;opacity:.15"></div>
-  <div style="max-width:1200px;margin:0 auto;position:relative;z-index:1">
-    <p class="sr" style="color:var(--gold);font-size:12px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;margin-bottom:16px">Why Onyx</p>
-    <h2 class="sr" style="font-size:clamp(1.8rem,3vw,2.6rem);font-weight:800;letter-spacing:-.02em;margin-bottom:56px">Built different. <span style="font-family:var(--serif);font-style:italic;color:var(--gold);font-weight:600">On purpose.</span></h2>
-    <div class="g3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px 44px">
-      <div class="sr feat"><h3 style="font-weight:700;font-size:17px;margin-bottom:8px">Rent finally earns</h3><p style="color:var(--warm);font-size:15px;line-height:1.65">Your biggest monthly expense has never generated a single reward point. Onyx changes that.</p></div>
-      <div class="sr feat"><h3 style="font-weight:700;font-size:17px;margin-bottom:8px">No switching required</h3><p style="color:var(--warm);font-size:15px;line-height:1.65">Keep your existing bank and cards. Onyx is added alongside them, not instead of them.</p></div>
-      <div class="sr feat"><h3 style="font-weight:700;font-size:17px;margin-bottom:8px">Apple Pay from day one</h3><p style="color:var(--warm);font-size:15px;line-height:1.65">Add Onyx to Apple Wallet the moment you're approved. Earn before the physical card arrives.</p></div>
-      <div class="sr"><h3 style="font-weight:700;font-size:17px;margin-bottom:8px">Local partner map</h3><p style="color:var(--warm);font-size:15px;line-height:1.65">Open the app, see partners near you, earn bonus points when you pay with Onyx.</p></div>
-      <div class="sr"><h3 style="font-weight:700;font-size:17px;margin-bottom:8px">Points on everything</h3><p style="color:var(--warm);font-size:15px;line-height:1.65">Earn on rent, groceries, dining, fuel, delivery. Every transaction counts.</p></div>
-      <div class="sr"><h3 style="font-weight:700;font-size:17px;margin-bottom:8px">Free to start</h3><p style="color:var(--warm);font-size:15px;line-height:1.65">The card costs nothing. Start earning from your first transaction.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ FAQ ═══ -->
-<section class="sec" style="background:var(--cream2)">
-  <div style="max-width:1200px;margin:0 auto">
-    <div class="g2" style="display:grid;grid-template-columns:1fr 2fr;gap:80px">
-      <div class="sr"><p style="color:var(--gold);font-size:12px;font-weight:700;letter-spacing:.3em;text-transform:uppercase">FAQ</p><h2 style="margin-top:12px;font-size:clamp(1.5rem,2.4vw,2.2rem);font-weight:800">Common <span style="font-family:var(--serif);font-style:italic;color:var(--gold);font-weight:600">questions</span></h2></div>
-      <div class="sr">
-        <details style="border-bottom:1px solid var(--cream3);padding:24px 0"><summary style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:17px;font-weight:600">Do I need to change how I pay rent?</span><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--gold);transition:transform .2s;flex-shrink:0"><path d="M6 9l6 6 6-6"/></svg></summary><p style="color:var(--warm);line-height:1.7;margin-top:16px;font-size:15px">No. Keep paying however you do now. Onyx verifies through Ejar and credits points separately. Nothing changes on your landlord's end.</p></details>
-
-        <details style="border-bottom:1px solid var(--cream3);padding:24px 0"><summary style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:17px;font-weight:600">Is the card free?</span><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--gold);transition:transform .2s;flex-shrink:0"><path d="M6 9l6 6 6-6"/></svg></summary><p style="color:var(--warm);line-height:1.7;margin-top:16px;font-size:15px">Yes. Free to get, free to use. Start earning from your first transaction.</p></details>
-        <details style="border-bottom:1px solid var(--cream3);padding:24px 0"><summary style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:17px;font-weight:600">How do I earn on rent if I don't pay rent with a card?</span><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--gold);transition:transform .2s;flex-shrink:0"><path d="M6 9l6 6 6-6"/></svg></summary><p style="color:var(--warm);line-height:1.7;margin-top:16px;font-size:15px">You don't pay rent through the card. You pay rent via bank transfer as usual. Onyx verifies the payment through Ejar contract data and credits points to your card account separately.</p></details>
-        <details style="padding:24px 0"><summary style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:17px;font-weight:600">When does Onyx launch?</span><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--gold);transition:transform .2s;flex-shrink:0"><path d="M6 9l6 6 6-6"/></svg></summary><p style="color:var(--warm);line-height:1.7;margin-top:16px;font-size:15px">Riyadh first. Join the waitlist for priority access.</p></details>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ CTA ═══ -->
-<section class="sec" style="background:var(--card-dk);text-align:center;padding:100px 24px;position:relative;overflow:hidden">
-  <!-- Decorative elements -->
-  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(180,150,66,.04),transparent 60%);pointer-events:none"></div>
-  <div class="float-orb" style="width:6px;height:6px;background:var(--gold);top:20%;left:15%;animation:orbitSlow 14s ease-in-out infinite;opacity:.3"></div>
-  <div class="float-orb" style="width:4px;height:4px;background:var(--gold);bottom:25%;right:20%;animation:orbitSlow 18s ease-in-out infinite 3s;opacity:.2"></div>
-  <div style="max-width:560px;margin:0 auto;position:relative;z-index:1">
-    <h2 class="sr" style="font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:800;letter-spacing:-.02em;margin-bottom:16px;color:var(--cream)">Your rent should work <span style="font-family:var(--serif);font-style:italic;color:var(--gold);font-weight:600">for you.</span></h2>
-    <p class="sr" style="color:var(--warm-l);font-size:16px;margin-bottom:36px">Join the waitlist. Be the first to know when Onyx launches.</p>
-    <a href="#top" class="sr" style="display:inline-block;padding:16px 48px;border-radius:14px;font-size:15px;font-weight:600;background:var(--gold);color:white;text-decoration:none;transition:all .2s;cursor:pointer" onmouseover="this.style.background='var(--gold-l)'" onmouseout="this.style.background='var(--gold)'">Join the Waitlist</a>
-  </div>
-</section>
-
-<footer style="padding:36px 24px;background:var(--cream);border-top:1px solid var(--cream3)"><div style="max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center"><span style="font-family:var(--serif);color:var(--gold);font-size:14px;font-weight:600;letter-spacing:.1em">ONYX</span><p style="color:var(--warm);font-size:13px">&copy; 2026 Onyx</p></div></footer>
-
-<!-- Toast -->
-<div id="ts" style="position:fixed;top:20px;left:0;right:0;z-index:10000;display:none;justify-content:center"><div style="background:white;border:1px solid rgba(239,68,68,.12);border-radius:14px;padding:14px 20px;box-shadow:0 16px 48px rgba(0,0,0,.1);display:flex;align-items:center;gap:10px;margin:0 16px"><span style="color:#EF4444">&#9888;</span><div><p style="color:#EF4444;font-weight:600;font-size:13px">Something went wrong</p><p style="color:var(--warm);font-size:12px">Please try again.</p></div><button onclick="ht()" style="color:var(--warm);background:none;border:none;cursor:pointer;font-size:16px;margin-left:6px">&times;</button></div></div>
-
 <script>
-  // Nav show/hide
-  const nv=document.getElementById('nav');let tk=false;
-  window.addEventListener('scroll',()=>{if(!tk){requestAnimationFrame(()=>{nv.classList.toggle('on',scrollY>600);tk=false});tk=true}});
+  // Nav + bottom bar — same pattern as original index.html
+  const siteNav = document.getElementById('site-nav');
+  const bottomBar = document.getElementById('bottom-bar');
+  let _navTick = false;
+  window.addEventListener('scroll', () => {
+    if (!_navTick) {
+      requestAnimationFrame(() => {
+        const past = window.scrollY > 1;
+        if(siteNav) siteNav.classList.toggle('scrolled', past);
+        if(bottomBar) bottomBar.classList.toggle('visible', past);
+        _navTick = false;
+      });
+      _navTick = true;
+    }
+  });
 
   // Scroll reveal
-  const io=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}})},{threshold:.12});
-  document.querySelectorAll('.sr').forEach(el=>io.observe(el));
+  const io = new IntersectionObserver(e => {
+    e.forEach(x => { if (x.isIntersecting) { x.target.classList.add('in'); io.unobserve(x.target); } });
+  }, { threshold:.12 });
+  document.querySelectorAll('.sr').forEach(el => io.observe(el));
 
-  // Subtle parallax on mouse move (hero right side only)
-  const scene=document.getElementById('card-scene');
-  if(scene){
-    const heroRight=scene.closest('.hero-right');
-    if(heroRight){
-      heroRight.addEventListener('mousemove',e=>{
-        const rect=heroRight.getBoundingClientRect();
-        const x=(e.clientX-rect.left)/rect.width-.5;
-        const y=(e.clientY-rect.top)/rect.height-.5;
-        scene.style.transform=`translate(${x*12}px,${y*8}px)`;
-        scene.style.transition='transform .3s ease-out';
-      });
-      heroRight.addEventListener('mouseleave',()=>{
-        scene.style.transform='translate(0,0)';
-        scene.style.transition='transform .6s ease-out';
-      });
-    }
+  // 3D card tilt + specular
+  const scene = document.querySelector('.card-scene');
+  const tilt = document.getElementById('card-tilt');
+  const spec = document.getElementById('card-specular');
+  if (scene && tilt){
+    scene.addEventListener('mousemove', e => {
+      const r = scene.getBoundingClientRect();
+      const x = (e.clientX - r.left)/r.width;
+      const y = (e.clientY - r.top)/r.height;
+      tilt.style.transform = `rotateY(${(x-.5)*26}deg) rotateX(${(y-.5)*-18}deg)`;
+      tilt.style.transition = 'transform .08s ease-out';
+      spec.style.background = `radial-gradient(ellipse 60% 50% at ${x*100}% ${y*100}%, rgba(255,255,255,.13), transparent 70%)`;
+    });
+    scene.addEventListener('mouseleave', () => {
+      tilt.style.transform = 'rotateY(0deg) rotateX(0deg)';
+      tilt.style.transition = 'transform .8s cubic-bezier(.22,1,.36,1)';
+      spec.style.background = 'radial-gradient(ellipse 60% 45% at 50% 30%, rgba(255,255,255,.06), transparent 70%)';
+    });
   }
 
   // Toast
-  function st(){const t=document.getElementById('ts');t.style.display='flex';clearTimeout(window._t);window._t=setTimeout(ht,5e3)}
-  function ht(){document.getElementById('ts').style.display='none'}
+  function st(){const t=document.getElementById('toast');t.style.display='flex';clearTimeout(window._tt);window._tt=setTimeout(ht,5000)}
+  function ht(){document.getElementById('toast').style.display='none'}
 
   // Form submit
-  async function hs(e){e.preventDefault();const b=document.getElementById('sb'),f=document.getElementById('wf'),ok=document.getElementById('sm'),dp=document.getElementById('dm');ok.style.display='none';dp.style.display='none';ht();const o=b.textContent;b.disabled=true;b.textContent='Joining...';b.style.opacity='.7';const A='__API_GATEWAY_URL__';try{const r=await fetch(`${A}/waitlist`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({full_name:document.getElementById('fn').value,email:document.getElementById('em').value,neighborhood:document.getElementById('nb').value})});if(r.ok){f.style.display='none';ok.style.display='block'}else if(r.status===409){f.style.display='none';dp.style.display='block'}else{st();b.disabled=false;b.textContent=o;b.style.opacity='1'}}catch{st();b.disabled=false;b.textContent=o;b.style.opacity='1'}return false}
+  async function hs(e){
+    e.preventDefault();
+    const b=document.getElementById('sb'),f=document.getElementById('wf');
+    const ok=document.getElementById('sm'),dp=document.getElementById('dm');
+    ok.style.display='none';dp.style.display='none';ht();
+    const o=b.innerHTML;b.disabled=true;b.innerHTML='<span>Sending…</span>';b.style.opacity='.7';
+    const A='__API_GATEWAY_URL__';
+    try{
+      const r=await fetch(`${A}/waitlist`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({full_name:document.getElementById('fn').value,email:document.getElementById('em').value,neighborhood:document.getElementById('nb').value})});
+      if(r.ok){f.style.display='none';ok.style.display='block'}
+      else if(r.status===409){f.style.display='none';dp.style.display='block'}
+      else{st();b.disabled=false;b.innerHTML=o;b.style.opacity='1'}
+    }catch{st();b.disabled=false;b.innerHTML=o;b.style.opacity='1'}
+    return false;
+  }
+</script>
+<!-- ── BOTTOM BAR ── -->
+<div id="bottom-bar">
+  <span class="bb-brand">Onyx</span>
+  <div class="bb-right">
+    <a href="#form-section" class="bb-cta"><span style="width:7px;height:7px;border-radius:50%;background:currentColor;animation:blink 1.5s step-end infinite;flex-shrink:0"></span>Join the Waitlist</a>
+  </div>
+</div>
+
+<!-- ── WAITLIST MODAL ── -->
+<div id="wl-modal">
+  <div class="modal-backdrop" onclick="closeModal()"></div>
+  <div class="modal-sheet">
+    <div class="modal-header">
+      <span class="modal-title">Join the <i>waitlist.</i></span>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <form id="wf2" onsubmit="return hs2(event)">
+      <div class="form-row">
+        <label class="field-label" for="fn2">First Name <span>★</span></label>
+        <input type="text" id="fn2" class="field" placeholder="Omar" required>
+      </div>
+      <div class="form-row">
+        <label class="field-label" for="em2">Email <span>★</span></label>
+        <input type="email" id="em2" class="field" placeholder="you@example.com" required>
+      </div>
+      <div class="form-row">
+        <label class="field-label" for="nb2">Neighborhood <span>★</span></label>
+        <select id="nb2" class="field" required>
+          <option value="" disabled selected>Select neighborhood</option>
+          <option>Al Olaya</option><option>Al Nakheel</option><option>Al Malqa</option>
+          <option>Hittin</option><option>Al Yasmin</option><option>Al Narjis</option>
+          <option>Al Wurud</option><option>Al Muhammadiyah</option><option>Al Sulimaniyah</option>
+          <option>Diplomatic Quarter</option><option>KAFD area</option><option>Other</option>
+        </select>
+      </div>
+      <button type="submit" id="sb2" class="btn-submit"><span>Reserve my spot</span><span class="arrow">→</span></button>
+    </form>
+    <div id="sm2" class="form-msg" style="display:none">
+      <p style="font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--gold-d);margin-bottom:6px">✓ CONFIRMED</p>
+      <p style="font-family:var(--serif);font-size:22px">You're on the list.</p>
+      <p style="color:var(--warm);font-size:13px;margin-top:6px">We'll reach out when Onyx is ready.</p>
+    </div>
+    <div id="dm2" class="form-msg dup" style="display:none">
+      <p style="font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:#B8860B;margin-bottom:6px">⚠ ALREADY REGISTERED</p>
+      <p style="font-family:var(--serif);font-size:22px">You're already on it.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openModal(){
+    document.getElementById('wl-modal').classList.add('open');
+    document.body.style.overflow='hidden';
+  }
+  function closeModal(){
+    document.getElementById('wl-modal').classList.remove('open');
+    document.body.style.overflow='';
+  }
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+  // float-btn removed; no observer needed
+
+  async function hs2(e){
+    e.preventDefault();
+    const b=document.getElementById('sb2'),f=document.getElementById('wf2');
+    const ok=document.getElementById('sm2'),dp=document.getElementById('dm2');
+    ok.style.display='none';dp.style.display='none';
+    const o=b.innerHTML;b.disabled=true;b.innerHTML='<span>Sending…</span>';b.style.opacity='.7';
+    const A='__API_GATEWAY_URL__';
+    try{
+      const r=await fetch(`${A}/waitlist`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({full_name:document.getElementById('fn2').value,email:document.getElementById('em2').value,neighborhood:document.getElementById('nb2').value})});
+      if(r.ok){f.style.display='none';ok.style.display='block';}
+      else if(r.status===409){f.style.display='none';dp.style.display='block';}
+      else{b.disabled=false;b.innerHTML=o;b.style.opacity='1';}
+    }catch{b.disabled=false;b.innerHTML=o;b.style.opacity='1';}
+    return false;
+  }
 </script>
 </body>
 </html>
