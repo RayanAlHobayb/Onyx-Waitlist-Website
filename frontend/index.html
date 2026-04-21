@@ -420,9 +420,12 @@
     .btn-submit .arrow{transition:transform .25s}
     .btn-submit:hover .arrow{transform:translateX(4px)}
 
-    .form-msg{margin-top:0}
-    .form-msg .msg-title{font-family:var(--serif);font-size:28px;letter-spacing:-.02em;margin-bottom:8px}
-    .form-msg .msg-sub{color:var(--warm);font-size:15px;line-height:1.5}
+    .form-msg{
+      display:flex;flex-direction:column;justify-content:center;
+      text-align:center;
+    }
+    .form-msg .msg-title{font-family:var(--serif);font-size:clamp(2rem,4vw,3.5rem);font-weight:400;letter-spacing:-.02em;margin-bottom:12px;color:var(--cream)}
+    .form-msg .msg-sub{color:var(--warm-l);font-size:16px;line-height:1.5}
 
     /* ═════════════ MANIFESTO / BIG QUOTE ═════════════ */
     #manifesto{
@@ -1004,14 +1007,14 @@
             <span class="arrow">→</span>
           </button>
         </form>
-        <div id="sm" class="form-msg" style="display:none">
-          <p class="msg-title">You're on the list.</p>
-          <p class="msg-sub">We'll reach out when Onyx is ready for you.</p>
-        </div>
-        <div id="dm" class="form-msg dup" style="display:none">
-          <p class="msg-title">Already registered.</p>
-          <p class="msg-sub">This email is on the waitlist.</p>
-        </div>
+      </div>
+      <div id="sm" class="form-msg" style="display:none">
+        <p class="msg-title">You're on the list.</p>
+        <p class="msg-sub">We'll reach out when Onyx is ready for you.</p>
+      </div>
+      <div id="dm" class="form-msg dup" style="display:none">
+        <p class="msg-title">Already registered.</p>
+        <p class="msg-sub">This email is on the waitlist.</p>
       </div>
     </div>
   </div>
@@ -1096,15 +1099,15 @@
   // Form submit
   async function hs(e){
     e.preventDefault();
-    const b=document.getElementById('sb'),f=document.getElementById('wf');
+    const b=document.getElementById('sb'),fc=document.querySelector('.form-card');
     const ok=document.getElementById('sm'),dp=document.getElementById('dm');
     ok.style.display='none';dp.style.display='none';ht();
     const o=b.innerHTML;b.disabled=true;b.innerHTML='<span>Sending…</span>';b.style.opacity='.7';
     const A='__API_GATEWAY_URL__';
     try{
       const r=await fetch(`${A}/waitlist`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({full_name:document.getElementById('fn').value,email:document.getElementById('em').value,neighborhood:document.getElementById('nb').value})});
-      if(r.ok){f.style.display='none';ok.style.display='block'}
-      else if(r.status===409){f.style.display='none';dp.style.display='block'}
+      if(r.ok){fc.style.display='none';ok.style.display='flex'}
+      else if(r.status===409){fc.style.display='none';dp.style.display='flex'}
       else{st();b.disabled=false;b.innerHTML=o;b.style.opacity='1'}
     }catch{st();b.disabled=false;b.innerHTML=o;b.style.opacity='1'}
     return false;
