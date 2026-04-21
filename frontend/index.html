@@ -263,10 +263,10 @@
       .txn-callout{ padding:8px 10px; }
       .txn-callout .txn-title{ font-size:10px; }
       .txn-callout .txn-sub{ font-size:9px; }
-      .txn-2{ display:none }
-      .txn-4{ display:none }
-      .txn-1{ top:8%; left:5% }
-      .txn-3{ bottom:8%; right:5% }
+      .txn-1{ top:6%; left:4% }
+      .txn-2{ top:6%; right:4% }
+      .txn-3{ bottom:6%; right:4% }
+      .txn-4{ bottom:6%; left:4% }
     }
 
     /* 3D Card */
@@ -419,26 +419,12 @@
     .btn-submit:hover .arrow{transform:translateX(4px)}
 
     .form-msg{
-      background:var(--ink);color:var(--cream);
-      border:1px solid rgba(180,150,66,.3);border-radius:8px;
-      padding:28px;margin-top:20px;position:relative;overflow:hidden;
-      box-shadow:8px 8px 0 var(--gold);
+      border:1px solid var(--ink);border-radius:4px;
+      padding:20px 24px;margin-top:16px;
     }
-    .form-msg::before{
-      content:'';position:absolute;top:0;left:0;right:0;height:3px;
-      background:linear-gradient(90deg,var(--gold-d),var(--gold-l),var(--gold-d));
-    }
-    .form-msg .msg-badge{
-      font-family:var(--mono);font-size:10px;letter-spacing:.25em;text-transform:uppercase;
-      color:var(--gold);margin-bottom:10px;display:flex;align-items:center;gap:8px;
-    }
-    .form-msg .msg-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--gold)}
-    .form-msg .msg-title{font-family:var(--serif);font-size:24px;letter-spacing:-.01em;color:var(--cream);margin-bottom:8px}
-    .form-msg .msg-sub{color:var(--warm-l);font-size:14px;line-height:1.5}
-    .form-msg.dup{border-color:rgba(184,134,11,.3);box-shadow:8px 8px 0 #B8860B}
-    .form-msg.dup::before{background:linear-gradient(90deg,#8A6914,#B8860B,#8A6914)}
-    .form-msg.dup .msg-badge{color:#D4A017}
-    .form-msg.dup .msg-badge::before{background:#D4A017}
+    .form-msg .msg-title{font-family:var(--serif);font-size:22px;letter-spacing:-.01em;margin-bottom:4px}
+    .form-msg .msg-sub{color:var(--warm);font-size:14px}
+    .form-msg.dup{border-color:rgba(14,13,11,.3)}
 
     /* ═════════════ MANIFESTO / BIG QUOTE ═════════════ */
     #manifesto{
@@ -643,12 +629,13 @@
       .card-val{font-size:12px!important}
       .txn-callout{padding:8px 12px!important;border-radius:10px!important}
       .txn-callout .txn-icon{width:28px!important;height:28px!important;border-radius:7px!important}
+      .txn-callout{display:flex!important}
       .txn-callout .txn-title{font-size:11px!important}
       .txn-callout .txn-sub{font-size:9px!important}
-      .txn-1{top:8%!important;left:5%!important;display:flex!important}
-      .txn-2{display:none!important}
-      .txn-3{bottom:8%!important;right:5%!important;display:flex!important}
-      .txn-4{display:none!important}
+      .txn-1{top:6%!important;left:4%!important}
+      .txn-2{top:6%!important;right:4%!important}
+      .txn-3{bottom:6%!important;right:4%!important}
+      .txn-4{bottom:6%!important;left:4%!important}
       .corner-stamp{display:none}
       .nav-inner{padding:0 20px}
       .nav-logo{font-size:28px}
@@ -1020,14 +1007,12 @@
           </button>
         </form>
         <div id="sm" class="form-msg" style="display:none">
-          <div class="msg-badge">Confirmed</div>
           <p class="msg-title">You're on the list.</p>
           <p class="msg-sub">We'll reach out when Onyx is ready for you.</p>
         </div>
         <div id="dm" class="form-msg dup" style="display:none">
-          <div class="msg-badge">Already registered</div>
-          <p class="msg-title">You're already on it.</p>
-          <p class="msg-sub">This email is on the waitlist. We'll be in touch soon.</p>
+          <p class="msg-title">Already registered.</p>
+          <p class="msg-sub">This email is on the waitlist.</p>
         </div>
       </div>
     </div>
@@ -1165,13 +1150,11 @@
       <button type="submit" id="sb2" class="btn-submit"><span>Reserve my spot</span><span class="arrow">→</span></button>
     </form>
     <div id="sm2" class="form-msg" style="display:none">
-      <div class="msg-badge">Confirmed</div>
       <p class="msg-title">You're on the list.</p>
       <p class="msg-sub">We'll reach out when Onyx is ready.</p>
     </div>
     <div id="dm2" class="form-msg dup" style="display:none">
-      <div class="msg-badge">Already registered</div>
-      <p class="msg-title">You're already on it.</p>
+      <p class="msg-title">Already registered.</p>
       <p class="msg-sub">This email is on the waitlist.</p>
     </div>
   </div>
