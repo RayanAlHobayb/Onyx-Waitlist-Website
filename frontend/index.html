@@ -1298,6 +1298,9 @@ window.addEventListener('DOMContentLoaded', function(){
   // Smooth, distance-aware anchor scrolling (native smooth is near-instant over long distances).
   if (window.ScrollToPlugin){
     gsap.registerPlugin(ScrollToPlugin);
+    // CSS smooth-scrolling re-animates every position the plugin sets, which makes
+    // autoKill think the user scrolled and kill the tween — GSAP owns scrolling now.
+    document.documentElement.style.scrollBehavior = 'auto';
     document.querySelectorAll('a[href^="#"]').forEach(a=>{
       a.addEventListener('click', e=>{
         const href = a.getAttribute('href');
