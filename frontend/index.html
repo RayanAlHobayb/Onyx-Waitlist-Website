@@ -257,7 +257,7 @@
     }
     .txn-1{ top:13%; left:8%; animation:fadeUp .6s .6s both, float1 5s 1.2s ease-in-out infinite }
     .txn-2{ top:9%; right:10%; animation:fadeUp .6s .9s both, float2 6s 1.5s ease-in-out infinite }
-    .txn-3{ bottom:28%; right:7%; animation:fadeUp .6s 1.2s both, float3 5.5s 1.8s ease-in-out infinite }
+    .txn-3{ bottom:11%; right:5%; animation:fadeUp .6s 1.2s both, float3 5.5s 1.8s ease-in-out infinite }
     .txn-4{ bottom:14%; left:7%; animation:fadeUp .6s 1.5s both, float4 6.5s 2.1s ease-in-out infinite }
     @media (max-width:920px){
       .txn-callout{ padding:8px 10px; }
@@ -807,10 +807,10 @@
             <animate attributeName="r" values="3.5;15;3.5" dur="3s" begin=".8s" repeatCount="indefinite"/>
             <animate attributeName="opacity" values=".9;0;.9" dur="3s" begin=".8s" repeatCount="indefinite"/>
           </circle>
-          <!-- txn-3 bottom:28% right:7% → top~72% -->
-          <circle cx="521" cy="504" r="18" fill="#D4B96A" opacity=".12"/>
-          <circle cx="521" cy="504" r="3.5" fill="#D4B96A"/>
-          <circle cx="521" cy="504" r="3.5" fill="none" stroke="#D4B96A" stroke-width="1.2">
+          <!-- txn-3 bottom:11% right:5% → top~85% -->
+          <circle cx="521" cy="600" r="18" fill="#D4B96A" opacity=".12"/>
+          <circle cx="521" cy="600" r="3.5" fill="#D4B96A"/>
+          <circle cx="521" cy="600" r="3.5" fill="none" stroke="#D4B96A" stroke-width="1.2">
             <animate attributeName="r" values="3.5;15;3.5" dur="3s" begin="1.4s" repeatCount="indefinite"/>
             <animate attributeName="opacity" values=".9;0;.9" dur="3s" begin="1.4s" repeatCount="indefinite"/>
           </circle>
@@ -1286,6 +1286,7 @@
 <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollToPlugin.min.js"></script>
 <script>
 window.addEventListener('DOMContentLoaded', function(){
   // If the CDN failed or the user prefers stillness, the page falls back to the original CSS/IO behavior.
@@ -1293,6 +1294,26 @@ window.addEventListener('DOMContentLoaded', function(){
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   gsap.registerPlugin(ScrollTrigger);
   if (window.SplitText) gsap.registerPlugin(SplitText);
+
+  // Smooth, distance-aware anchor scrolling (native smooth is near-instant over long distances).
+  if (window.ScrollToPlugin){
+    gsap.registerPlugin(ScrollToPlugin);
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', e=>{
+        const href = a.getAttribute('href');
+        const target = href === '#' ? document.body : document.querySelector(href);
+        if (!target) return;
+        e.preventDefault();
+        const dist = Math.abs(target.getBoundingClientRect().top);
+        gsap.to(window, {
+          scrollTo: {y: href === '#' ? 0 : target, autoKill: true},
+          duration: Math.min(2.4, .6 + dist/3500),
+          ease: 'power2.inOut',
+          onComplete(){ if (href !== '#') history.replaceState(null, '', href); }
+        });
+      });
+    });
+  }
 
   // Suppress CSS hero entrance immediately on desktop so GSAP can own it after fonts settle.
   if (window.innerWidth > 920) document.documentElement.classList.add('gsap-on');
