@@ -120,7 +120,7 @@
 
     /* ═════════════ HERO ═════════════ */
     #hero{
-      height:100vh; min-height:700px;
+      height:100vh; height:100svh; min-height:700px;
       padding:0;
       position:relative; overflow:hidden;
       background:var(--cream);
@@ -205,7 +205,7 @@
     /* RIGHT — Card scene */
     .card-scene{
       position:relative;
-      height:calc(100vh - 120px);
+      height:calc(100vh - 120px); height:calc(100svh - 120px);
       min-height:520px; max-height:760px;
       display:flex; align-items:center; justify-content:center;
       background:#181614;
@@ -460,6 +460,7 @@
     .mani-text u{
       text-decoration:none; position:relative;
       background-image:linear-gradient(transparent 65%, rgba(180,150,66,.45) 65%, rgba(180,150,66,.45) 92%, transparent 92%);
+      background-repeat:no-repeat; background-size:100% 100%;
       padding:0 .04em;
     }
     .mani-sig{
@@ -628,6 +629,61 @@
     /* Toast */
     #toast{position:fixed;top:68px;left:0;right:0;z-index:10000;display:none;justify-content:center}
 
+    /* ═════════════ SCROLL STORY (GSAP — desktop only, html.gsap-on) ═════════════ */
+    .hero-coming{animation:fadeUp .9s .32s both}
+    .hero-meta .cta-btn{animation:fadeUp .9s .42s both}
+    /* When the GSAP story drives motion, CSS entrance/idle animations step aside */
+    html.gsap-on .hero-h1, html.gsap-on .hero-sub, html.gsap-on .hero-meta,
+    html.gsap-on .hero-coming, html.gsap-on .hero-meta .cta-btn,
+    html.gsap-on .card-wrap, html.gsap-on .card-tilt, html.gsap-on .txn-callout{animation:none}
+    .gsap-claimed{transition:none!important}
+
+    /* Fixed protagonist layer: card travels here between scenes */
+    #card-stage{position:fixed;inset:0;pointer-events:none;z-index:7;perspective:1600px;display:none}
+    html.gsap-on #card-stage{display:block}
+    html.gsap-on .mani-inner{z-index:8}
+    #card-wrap.staged{position:absolute;top:0;left:0;width:380px;height:240px;margin:0;transform-style:preserve-3d;will-change:transform}
+    #card-slot-hero{width:380px;height:240px;visibility:hidden}
+    html.gsap-on .card-body{backface-visibility:hidden;-webkit-backface-visibility:hidden}
+
+    /* Card back face — revealed by the 180° flip across #why */
+    .card-back{display:none}
+    html.gsap-on .card-back{
+      display:flex;flex-direction:column;justify-content:space-between;
+      position:absolute;inset:0;border-radius:14px;padding:24px 0 22px;
+      transform:rotateY(180deg);backface-visibility:hidden;-webkit-backface-visibility:hidden;
+      background:
+        radial-gradient(ellipse at 70% 85%, rgba(212,185,106,.12), transparent 55%),
+        linear-gradient(145deg, #141210 0%, #0B0A08 50%, #1A1816 100%);
+      border:1px solid rgba(212,185,106,.18);
+      color:var(--cream); overflow:hidden;
+      box-shadow:0 60px 120px -30px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.07);
+    }
+    .back-stripe{height:46px;background:linear-gradient(90deg,var(--gold-d),var(--gold) 35%,var(--gold-l) 55%,var(--gold))}
+    .back-meta{padding:0 30px;display:flex;flex-direction:column;gap:6px}
+    .back-line{font-family:var(--mono);font-size:11px;letter-spacing:.3em;color:var(--gold-l)}
+    .back-sub{font-family:var(--mono);font-size:9px;letter-spacing:.25em;color:rgba(245,241,232,.35)}
+
+    /* Card destination beside the form */
+    #card-slot-form{display:none}
+    html.gsap-on #card-slot-form{display:block;width:344px;height:218px;margin-top:16px;pointer-events:auto}
+
+    /* In-scene props for the HOW beats */
+    .step-chip{top:auto;bottom:96px;left:50%;transform:translateX(-50%);opacity:0;visibility:hidden}
+    .step-counter{display:none}
+    html.gsap-on .step-counter{
+      display:block;position:absolute;top:auto;bottom:100px;left:50%;transform:translateX(-50%);
+      font-family:var(--mono);font-size:30px;font-weight:700;color:var(--gold);
+      letter-spacing:.06em;white-space:nowrap;opacity:0;
+    }
+
+    /* Pinned sections need a full-viewport stage */
+    html.gsap-on #manifesto{min-height:100vh;display:flex;align-items:center}
+    html.gsap-on #manifesto .mani-inner{width:100%}
+    html.gsap-on #how{padding-top:72px;min-height:100vh}
+    html.gsap-on .how-head{margin-bottom:40px}
+    html.gsap-on .step{padding-bottom:200px} /* breathing room for the chip / counter beats */
+
     /* ── MOBILE ── */
     @media (max-width:920px){
       .hero-inner{grid-template-columns:1fr;gap:40px;padding:0 20px}
@@ -692,10 +748,10 @@
         The first card<br>that rewards<br><i>your</i> <span class="underline">rent.</span>
       </h1>
       <p class="hero-sub">Earn points on your rent and everyday spending at partner merchants across the city. Your biggest monthly expense, finally working for you.</p>
-      <p style="font-family:var(--sans);font-size:14px;color:var(--warm);margin-bottom:36px;animation:fadeUp .9s .32s both">Coming to Riyadh soon</p>
+      <p class="hero-coming" style="font-family:var(--sans);font-size:14px;color:var(--warm);margin-bottom:36px">Coming to Riyadh soon</p>
 
       <div class="hero-meta">
-        <a href="#form-section" class="cta-btn" style="animation:fadeUp .9s .42s both"><span class="dot"></span>Join the Waitlist</a>
+        <a href="#form-section" class="cta-btn"><span class="dot"></span>Join the Waitlist</a>
       </div>
     </div>
 
@@ -816,6 +872,14 @@
               </div>
             </div>
           </div>
+          <div class="card-back" aria-hidden="true">
+            <div class="card-noise"></div>
+            <div class="back-stripe"></div>
+            <div class="back-meta">
+              <p class="back-line">ONYX · RIYADH · VOL. 001</p>
+              <p class="back-sub">REWARDS ON RENT · MADE IN KSA</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -844,12 +908,17 @@
   <div class="how-steps">
     <div class="step sr"><span class="step-num">01</span><h3>Pay your <i>rent.</i></h3>
       <p>Link your Ejar contract and pay rent through bank transfer as you normally do. Onyx verifies the payment automatically.</p>
+      <div class="txn-callout step-chip" aria-hidden="true">
+        <div class="txn-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div>
+        <div class="txn-text"><span class="txn-title">Rent verified</span><span class="txn-sub">+4,000 pts</span></div>
+      </div>
     </div>
     <div class="step sr" style="transition-delay:.1s"><span class="step-num">02</span><h3>Use your <i>card.</i></h3>
       <p>Spend with your Onyx card on groceries, dining, coffee, fuel, and everything else. Earn points on every transaction.</p>
     </div>
     <div class="step sr" style="transition-delay:.2s"><span class="step-num">03</span><h3>Earn <i>rewards.</i></h3>
       <p>Collect points on your rent and daily spending. Redeem at partner merchants or save them for bigger rewards.</p>
+      <div class="step-counter" aria-hidden="true"><span id="ctr">0</span> pts</div>
     </div>
   </div>
 </section>
@@ -987,6 +1056,7 @@
       <div class="how-label" style="color:var(--gold)">Apply</div>
       <h2>Claim your <i>place</i> on the list.</h2>
       <p class="lede">Early members get priority access when Onyx launches in Riyadh. No fees. No commitments. Just first in line.</p>
+      <div id="card-slot-form" aria-hidden="true"></div>
 
     </div>
 
@@ -1207,6 +1277,301 @@
     }catch{b.disabled=false;b.innerHTML=o;b.style.opacity='1';}
     return false;
   }
+</script>
+
+<!-- ── CARD STAGE: fixed layer the protagonist card travels on (GSAP desktop only) ── -->
+<div id="card-stage" aria-hidden="true"></div>
+
+<!-- ═════════════ SCROLL STORY ═════════════ -->
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+<script>
+window.addEventListener('DOMContentLoaded', function(){
+  // If the CDN failed or the user prefers stillness, the page falls back to the original CSS/IO behavior.
+  if (!window.gsap || !window.ScrollTrigger) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  gsap.registerPlugin(ScrollTrigger);
+  if (window.SplitText) gsap.registerPlugin(SplitText);
+
+  // Suppress CSS hero entrance immediately on desktop so GSAP can own it after fonts settle.
+  if (window.innerWidth > 920) document.documentElement.classList.add('gsap-on');
+
+  // Map paths sorted thickest-first: arterials draw before side streets.
+  const mapPaths = gsap.utils.toArray('.map-bg path');
+  mapPaths.sort((a,b)=>(parseFloat(b.getAttribute('stroke-width'))||1)-(parseFloat(a.getAttribute('stroke-width'))||1));
+  mapPaths.forEach(p=>{const L=p.getTotalLength(); p.style.strokeDasharray=L+' '+L; p.style.strokeDashoffset=L;});
+
+  // Force-load display fonts first (Playfair metrics shift line wraps → pin distances), capped at 1.5s.
+  Promise.race([
+    Promise.all([
+      document.fonts.load('400 1em "Playfair Display"'),
+      document.fonts.load('italic 400 1em "Playfair Display"'),
+      document.fonts.load('400 1em Inter')
+    ]),
+    new Promise(r=>setTimeout(r,1500))
+  ]).then(init);
+
+  function init(){
+  const mm = gsap.matchMedia();
+
+  /* ── MOBILE: light touch — map draws once, everything else stays CSS/IO ── */
+  mm.add('(max-width: 920px)', () => {
+    gsap.to(mapPaths, {strokeDashoffset:0, duration:1.6, ease:'power1.inOut', stagger:.05,
+      scrollTrigger:{trigger:'#hero', start:'top 85%'}});
+  });
+
+  /* ── DESKTOP: the full cinematic story ── */
+  mm.add('(min-width: 921px)', () => {
+    const html = document.documentElement;
+    html.classList.add('gsap-on');
+
+    // Elements GSAP owns leave the .sr reveal system (instant .in, no transition).
+    document.querySelectorAll('.mani-text,.mani-label,#how .sr,#cta h2,#form-section .form-l').forEach(el=>{
+      el.classList.add('in','gsap-claimed');
+      try{ io.unobserve(el); }catch(_){}
+    });
+
+    /* Entrance (replaces the CSS fadeUp the gsap-on class disabled) */
+    gsap.from(['.hero-h1','.hero-sub','.hero-coming','.hero-meta'],
+      {autoAlpha:0, y:40, duration:1, ease:'power3.out', stagger:.1, delay:.05, clearProps:'transform'});
+
+    /* Promote the card to the fixed stage; a hidden placeholder holds its seat in the scene. */
+    const wrap = document.getElementById('card-wrap');
+    const tiltEl = document.getElementById('card-tilt');
+    const stage = document.getElementById('card-stage');
+    const sceneEl = document.getElementById('card-scene');
+    const ph = document.createElement('div');
+    ph.id = 'card-slot-hero';
+    wrap.parentNode.insertBefore(ph, wrap);
+    stage.appendChild(wrap);
+    wrap.classList.add('staged');
+    gsap.set(wrap, {transformOrigin:'50% 50%'});
+
+    /* Text splitting (graceful if SplitText missing) */
+    let heroSplit=null, maniSplit=null;
+    if (window.SplitText){
+      heroSplit = SplitText.create('.hero-h1', {type:'lines', mask:'lines'});
+      maniSplit = SplitText.create('.mani-text', {type:'lines,words', mask:'lines'});
+    }
+
+    /* ── SCENE 1: HERO — the city draws itself, transactions light up, headline exits ── */
+    const heroTL = gsap.timeline({defaults:{ease:'none'},
+      scrollTrigger:{trigger:'#hero', start:'top top', end:'+=150%', pin:true, scrub:1, anticipatePin:1}});
+    heroTL
+      .to(mapPaths, {strokeDashoffset:0, duration:.32, stagger:.012}, 0)
+      .fromTo('.txn-callout:not(.step-chip)', {autoAlpha:0, y:14}, {autoAlpha:1, y:0, duration:.06, stagger:.07, ease:'power2.out'}, .06)
+      .to(heroSplit ? heroSplit.lines : '.hero-h1', {yPercent:-120, autoAlpha:0, duration:.3, stagger:.05, ease:'power2.in'}, .42)
+      .to('.hero-left-col', {autoAlpha:0, y:-40, duration:.28, ease:'power2.in'}, .47)
+      .to('.txn-callout:not(.step-chip)', {autoAlpha:0, y:-10, duration:.14, stagger:.03, ease:'power1.in'}, .8)
+      .to(mapPaths, {opacity:.35, duration:.2}, .8);
+
+    /* ── SCENE 2: MANIFESTO — words rise behind the ghost card ── */
+    const maniTargets = maniSplit ? maniSplit.words : '.mani-text';
+    const maniTL = gsap.timeline({defaults:{ease:'power2.out'},
+      scrollTrigger:{trigger:'#manifesto', start:'top top', end:'+=100%', pin:true, scrub:1}});
+    maniTL
+      .from(maniTargets, {yPercent:120, duration:.55, stagger:.025}, 0)
+      .fromTo('.mani-text u', {backgroundSize:'0% 100%'}, {backgroundSize:'100% 100%', duration:.18, ease:'none'}, .5)
+      .from('.mani-label', {scaleX:0, duration:.5, ease:'power2.inOut'}, .05);
+
+    /* ── SCENE 3: HOW — three beats, the card docks beside each step ── */
+    const steps = gsap.utils.toArray('.how-steps .step');
+    const nums = steps.map(s=>s.querySelector('.step-num'));
+    gsap.set(steps, {opacity:.25});
+    const ctrEl = document.getElementById('ctr');
+    const ctr = {v:0};
+    const howTL = gsap.timeline({defaults:{ease:'power2.inOut'},
+      scrollTrigger:{trigger:'#how', start:'top top', end:'+=250%', pin:true, scrub:1}});
+    howTL
+      .from(['#how .how-label','#how .how-head h2'], {autoAlpha:0, y:30, duration:.1, stagger:.03, ease:'power2.out'}, 0)
+      .to(steps[0], {opacity:1, duration:.1}, .05)
+      .to(nums[0], {color:'rgba(180,150,66,.25)', duration:.1}, .05)
+      .to('.step-chip', {autoAlpha:1, scale:1, duration:.08, ease:'back.out(2)'}, .18)
+      .to(steps[0], {opacity:.35, duration:.08}, .36)
+      .to(nums[0], {color:'rgba(180,150,66,.08)', duration:.08}, .36)
+      .to(steps[1], {opacity:1, duration:.08}, .38)
+      .to(nums[1], {color:'rgba(180,150,66,.25)', duration:.08}, .38)
+      .to(steps[1], {opacity:.35, duration:.08}, .66)
+      .to(nums[1], {color:'rgba(180,150,66,.08)', duration:.08}, .66)
+      .to(steps[2], {opacity:1, duration:.08}, .68)
+      .to(nums[2], {color:'rgba(180,150,66,.25)', duration:.08}, .68)
+      .to('.step-counter', {opacity:1, duration:.06}, .7)
+      .to(ctr, {v:4572, duration:.26, ease:'power1.out',
+        onUpdate(){ ctrEl.textContent = Math.round(ctr.v).toLocaleString('en-US'); }}, .72);
+    gsap.set('.step-chip', {scale:.6});
+
+    /* ── SCENE 4: PARTNERS — scroll velocity drives the marquee ── */
+    const tracks = gsap.utils.toArray('.marquee-track');
+    let anims = [], lastV = 0, tickerOn = false;
+    const collect = ()=>{ anims = tracks.map(t=>(t.getAnimations()||[])[0]).filter(Boolean); };
+    const veloTick = ()=>{
+      lastV *= .92;
+      const r = gsap.utils.clamp(1, 4, 1 + lastV/700);
+      if (!anims.length) collect();
+      anims.forEach(a=>{ a.playbackRate = r; });
+    };
+    ScrollTrigger.create({trigger:'#partners', start:'top bottom', end:'bottom top',
+      onUpdate(self){ lastV = Math.abs(self.getVelocity()); },
+      onToggle(self){
+        if (self.isActive && !tickerOn){ collect(); gsap.ticker.add(veloTick); tickerOn = true; }
+        else if (!self.isActive && tickerOn){ gsap.ticker.remove(veloTick); tickerOn = false; anims.forEach(a=>a.playbackRate=1); }
+      }});
+
+    /* ── SCENE 8: CTA settles in, the footer title card rises ── */
+    gsap.fromTo('#cta h2', {scale:1.12, autoAlpha:0}, {scale:1, autoAlpha:1, ease:'none',
+      scrollTrigger:{trigger:'#cta', start:'top 80%', end:'top 30%', scrub:1}});
+    gsap.fromTo('.foot-big', {clipPath:'inset(100% 0% 0% 0%)', yPercent:18}, {clipPath:'inset(0% 0% 0% 0%)', yPercent:0, ease:'none',
+      scrollTrigger:{trigger:'footer', start:'top 95%', end:'bottom bottom', scrub:1}});
+
+    /* ── THE PROTAGONIST ENGINE ──
+       The card's journey is a table of scroll-keyed poses; every frame we
+       interpolate between the bracketing keyframes (separate eases per axis
+       give natural arcs) and write one transform to the fixed-stage card. */
+    const E = {
+      lin: t=>t,
+      i1: gsap.parseEase('power1.inOut'),
+      i2: gsap.parseEase('power2.inOut'),
+      o2: gsap.parseEase('power2.out'),
+      bk: gsap.parseEase('back.out(1.8)'),
+    };
+    const P = (x,y,s,r,ry,a)=>({x,y,s,r,ry,a});
+    const at = (cx,cy,s,r,ry,a)=>P(cx-190, cy-120, s, r, ry, a);
+    const C = pose => ()=>pose;
+    const flipBonus = {v:0}; // additive spin for the signup celebration
+
+    let K = [];
+    function buildK(){
+      const vw = window.innerWidth, vh = window.innerHeight, sy = window.scrollY;
+      const heroST = heroTL.scrollTrigger, maniST = maniTL.scrollTrigger, howST = howTL.scrollTrigger;
+      const heroRect = document.getElementById('hero').getBoundingClientRect();
+      const sceneRect = sceneEl.getBoundingClientRect();
+      // Scene-relative measurements survive pinning (section + children move together).
+      const sceneCx = sceneRect.left + sceneRect.width/2;
+      const sceneCy = (sceneRect.top - heroRect.top) + sceneRect.height/2;
+      const howRect = document.getElementById('how').getBoundingClientRect();
+      const step2R = steps[1].getBoundingClientRect();
+      const d2cx = step2R.left + step2R.width/2;
+      const d2cy = (step2R.bottom - howRect.top) - 110; // inside the step's bottom padding zone
+      const formTop = document.getElementById('form-section').getBoundingClientRect().top + sy;
+      const slot = document.getElementById('card-slot-form');
+      const slotR = slot.getBoundingClientRect();
+      const slotDoc = {cx: slotR.left + slotR.width/2, cy: slotR.top + sy + slotR.height/2};
+
+      const heroPose0 = at(sceneCx, sceneCy, 1, 0, 0, 1);
+      const heroPose1 = at(sceneCx, sceneCy, 1.12, 0, 0, 1);
+      const ghost    = at(vw/2, vh*.52, 2.1, 0, 0, .08);
+      const maniEnd  = at(vw/2, vh*.78, .55, 0, 0, 1);
+      const maniExit = at(vw/2, vh*1.05, .4, 4, 0, 0);
+      // The card vanishes after the manifesto, then pops into the "Use your card"
+      // column as a prop when beat 2 activates (chip-style), dims with its step,
+      // and rides off with the section. It returns at the form with a spin-in.
+      const dock2     = at(d2cx, d2cy, .45, 0, 0, 1);
+      const dock2Pre  = at(d2cx, d2cy + 14, .3, 0, 0, 0);
+      const dock2Dim  = at(d2cx, d2cy, .45, 0, 0, .35);
+      const dock2Flow = y => at(d2cx, (howST.end + d2cy) - y, .45, 0, 0, .35);
+      const dock2Gone = y => at(d2cx, (howST.end + d2cy) - y, .45, 0, 0, 0);
+      const exitY     = howST.end + d2cy + 200;
+      const preForm   = y => at(slotDoc.cx, slotDoc.cy - y + 150, .7, -8, 180, 0);
+      const formPose  = y => at(slotDoc.cx, slotDoc.cy - y, .9, 0, 360, 1);
+
+      const hS = heroST.start, hE = heroST.end, mS = maniST.start, mE = maniST.end;
+      const wS = howST.start, wE = howST.end, dH = wE - wS;
+
+      K = [
+        {y: hS,                p:C(heroPose0)},
+        {y: hS+(hE-hS)*.35,    p:C(heroPose0)},
+        {y: hS+(hE-hS)*.75,    p:C(heroPose1), ex:E.i1, ey:E.i1, eg:E.i1},
+        {y: mS,                p:C(ghost),    ex:E.i2, ey:E.o2, eg:E.i1},
+        {y: mS+(mE-mS)*.7,     p:C(ghost)},
+        {y: mE,                p:C(maniEnd),  eg:E.i1},
+        {y: mE+vh*.35,         p:C(maniExit), ey:E.i1, eg:E.i1},
+        {y: wS+dH*.36,         p:C(dock2Pre)},
+        {y: wS+dH*.42,         p:C(dock2),    eg:E.bk},
+        {y: wS+dH*.66,         p:C(dock2)},
+        {y: wS+dH*.74,         p:C(dock2Dim)},
+        {y: wE,                p:C(dock2Dim)},
+        {y: wE+1,              p:dock2Flow},
+        {y: exitY,             p:dock2Flow},
+        {y: exitY+60,          p:dock2Gone},
+        {y: formTop-vh*.85,    p:preForm},
+        {y: formTop-vh*.15,    p:formPose,    ex:E.i2, ey:E.o2, eg:E.i1},
+      ];
+      K.sort((a,b)=>a.y-b.y);
+      for (let i=1;i<K.length;i++) if (K[i].y <= K[i-1].y) K[i].y = K[i-1].y + 1;
+    }
+
+    const lerpPose = (A,B,tx,ty,tg)=>P(
+      A.x+(B.x-A.x)*tx, A.y+(B.y-A.y)*ty,
+      A.s+(B.s-A.s)*tg, A.r+(B.r-A.r)*tg, A.ry+(B.ry-A.ry)*tg, A.a+(B.a-A.a)*tg);
+
+    function update(){
+      if (!K.length) buildK();
+      if (!K.length) return;
+      const y = window.scrollY;
+      let pose;
+      if (y <= K[0].y) pose = K[0].p(y);
+      else if (y >= K[K.length-1].y) pose = K[K.length-1].p(y);
+      else {
+        let i = 0;
+        while (i < K.length-2 && y >= K[i+1].y) i++;
+        const A = K[i], B = K[i+1];
+        const t = (y - A.y)/(B.y - A.y);
+        pose = lerpPose(A.p(y), B.p(y), (B.ex||E.i1)(t), (B.ey||E.i1)(t), (B.eg||E.i1)(t));
+      }
+      gsap.set(wrap, {x:pose.x, y:pose.y, scale:pose.s, rotation:pose.r,
+        rotationY:pose.ry + flipBonus.v, autoAlpha:pose.a});
+    }
+    ScrollTrigger.addEventListener('refresh', buildK);
+    gsap.ticker.add(update);
+    // Also update on raw scroll: keeps the card honest when rAF is throttled (background tabs).
+    window.addEventListener('scroll', update, {passive:true});
+    ScrollTrigger.refresh();
+
+    /* Mouse tilt returns when the card lands beside the form */
+    const slotEl = document.getElementById('card-slot-form');
+    const specEl = document.getElementById('card-specular');
+    slotEl.addEventListener('mousemove', e=>{
+      const r = slotEl.getBoundingClientRect();
+      const x = (e.clientX-r.left)/r.width, yv = (e.clientY-r.top)/r.height;
+      tiltEl.style.transform = `rotateY(${(x-.5)*20}deg) rotateX(${(yv-.5)*-14}deg)`;
+      tiltEl.style.transition = 'transform .08s ease-out';
+      if (specEl) specEl.style.background = `radial-gradient(ellipse 60% 50% at ${x*100}% ${yv*100}%, rgba(255,255,255,.13), transparent 70%)`;
+    });
+    slotEl.addEventListener('mouseleave', ()=>{
+      tiltEl.style.transform = 'rotateY(0deg) rotateX(0deg)';
+      tiltEl.style.transition = 'transform .8s cubic-bezier(.22,1,.36,1)';
+    });
+
+    /* Signup success → one celebratory 360 (watches #sm, zero edits to form logic) */
+    const smEl = document.getElementById('sm');
+    const smObs = new MutationObserver(()=>{
+      if (smEl.style.display === 'flex')
+        gsap.fromTo(flipBonus, {v:0}, {v:360, duration:1.4, ease:'power2.inOut'});
+    });
+    smObs.observe(smEl, {attributes:true, attributeFilter:['style']});
+
+    document.fonts.ready.then(()=>ScrollTrigger.refresh());
+
+    /* Cleanup if the viewport crosses the breakpoint */
+    return () => {
+      html.classList.remove('gsap-on');
+      gsap.ticker.remove(update);
+      window.removeEventListener('scroll', update);
+      if (tickerOn) gsap.ticker.remove(veloTick);
+      anims.forEach(a=>a.playbackRate=1);
+      ScrollTrigger.removeEventListener('refresh', buildK);
+      smObs.disconnect();
+      if (heroSplit) heroSplit.revert();
+      if (maniSplit) maniSplit.revert();
+      if (ph.parentNode){ ph.parentNode.insertBefore(wrap, ph); ph.remove(); }
+      wrap.classList.remove('staged');
+      gsap.set(wrap, {clearProps:'all'});
+      mapPaths.forEach(p=>{p.style.strokeDasharray=''; p.style.strokeDashoffset='';});
+    };
+  });
+  }
+});
 </script>
 </body>
 </html>

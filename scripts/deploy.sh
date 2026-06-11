@@ -42,10 +42,19 @@ echo "  Website: $CF_URL"
 # ── 4. Patch frontend — inject real API Gateway URL ───────────────────────────
 echo ""
 echo "==> Patching frontend/index.html with API URL..."
+if [ "$(grep -c '__API_GATEWAY_URL__' frontend/index.html)" -ne 2 ]; then
+  echo "ERROR: expected __API_GATEWAY_URL__ exactly 2x in frontend/index.html — aborting." >&2
+  exit 1
+fi
 sed "s|__API_GATEWAY_URL__|${API_URL}|g" frontend/index.html > /tmp/index.html.deploy
 
 # ── 5. Upload to S3 ───────────────────────────────────────────────────────────
 echo "==> Uploading to s3://$BUCKET..."
+if [ -d frontend/img ]; then
+  aws s3 sync frontend/img "s3://$BUCKET/img" \
+    --cache-control "max-age=604800" \
+    --delete
+fi
 aws s3 cp /tmp/index.html.deploy "s3://$BUCKET/index.html" \
   --content-type "text/html" \
   --cache-control "max-age=300, must-revalidate"
